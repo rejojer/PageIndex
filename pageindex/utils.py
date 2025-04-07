@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import logging
 import yaml
+from mistralai import Mistral
 from pathlib import Path
 from types import SimpleNamespace as config
 
@@ -409,25 +410,58 @@ def add_preface_if_needed(data):
 
 
 def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="PyPDF2"):
+    enc = tiktoken.encoding_for_model(model)
     if pdf_parser == "PyPDF2":
         pdf_reader = PyPDF2.PdfReader(pdf_path)
+        page_list = []
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            page_text = page.extract_text()
+            token_length = len(enc.encode(page_text))
+            page_list.append((page_text, token_length))
+        return page_list
+    
     elif pdf_parser == "PyMuPDF":
-        pdf_reader = pymupdf.open(pdf_path)
+        if isinstance(pdf_path, BytesIO):
+            pdf_stream = pdf_path
+            doc = pymupdf.open(stream=pdf_stream, filetype="pdf")
+        elif isinstance(pdf_path, str) and os.path.isfile(pdf_path) and pdf_path.lower().endswith(".pdf"):
+            doc = pymupdf.open(pdf_path)
+        page_list = []
+        for page in doc:
+            page_text = page.get_text()
+            token_length = len(enc.encode(page_text))
+            page_list.append((page_text, token_length))
+        return page_list
+    
+    elif pdf_parser == "Mistral":
+        mistral_api_key = os.getenv("MISTRAL_API_KEY")
+        client = Mistral(api_key=mistral_api_key)
+        file_name = os.path.basename(pdf_path)
+        uploaded_pdf = client.files.upload(
+            file={
+                "file_name": file_name,
+                "content": open(pdf_path, "rb"),
+            },
+            purpose="ocr"
+        )
+        signed_url = client.files.get_signed_url(file_id=uploaded_pdf.id)
+        ocr_response = client.ocr.process(
+            model="mistral-ocr-latest",
+            document={
+                "type": "document_url",
+                "document_url": signed_url.url,
+            }
+        )
+        page_list = []
+        for page in ocr_response.pages:
+            page_text = page.markdown
+            token_length = len(enc.encode(page_text))
+            page_list.append((page_text, token_length))
+        return page_list
+
     else:
         raise ValueError(f"Unsupported PDF parser: {pdf_parser}")
-
-    enc = tiktoken.encoding_for_model(model)
-    
-    page_list = []
-    for page_num in range(len(pdf_reader.pages)):
-        page = pdf_reader.pages[page_num]
-        page_text = page.extract_text()
-        token_length = len(enc.encode(page_text))
-        page_list.append((page_text, token_length))
-    
-    return page_list
-
-
 
         
 
