@@ -409,7 +409,7 @@ def add_preface_if_needed(data):
 
 
 
-def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="PyPDF2"):
+def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="Mistral"):
     enc = tiktoken.encoding_for_model(model)
     if pdf_parser == "PyPDF2":
         pdf_reader = PyPDF2.PdfReader(pdf_path)
@@ -435,6 +435,7 @@ def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="PyPDF2"):
         return page_list
     
     elif pdf_parser == "Mistral":
+        print("Using Mistral for OCR...")
         mistral_api_key = os.getenv("MISTRAL_API_KEY")
         client = Mistral(api_key=mistral_api_key)
         file_name = os.path.basename(pdf_path)
@@ -458,6 +459,7 @@ def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="PyPDF2"):
             page_text = page.markdown
             token_length = len(enc.encode(page_text))
             page_list.append((page_text, token_length))
+        print("Finished OCR with Mistral...")
         return page_list
 
     else:
