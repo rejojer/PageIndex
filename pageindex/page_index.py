@@ -1025,7 +1025,8 @@ def page_index_main(doc, opt=None):
     if opt.if_add_node_summary == 'yes':
         add_node_text(structure, page_list)
         asyncio.run(generate_summaries_for_structure(structure, model=opt.model))
-        remove_structure_text(structure)  
+        if opt.if_add_node_text == 'no':
+            remove_structure_text(structure)  
         if opt.if_add_doc_description == 'yes':
             doc_description = generate_doc_description(structure, model=opt.model)
             return {
@@ -1040,7 +1041,7 @@ def page_index_main(doc, opt=None):
 
 
 def page_index(doc, model=None, toc_check_page_num=None, max_page_num_each_node=None, max_token_num_each_node=None,
-               if_add_node_id=None, if_add_node_summary=None, if_add_doc_description=None):
+               if_add_node_id=None, if_add_node_summary=None, if_add_doc_description=None, if_add_node_text=None):
     
     user_opt = {
         arg: value for arg, value in locals().items()
