@@ -439,6 +439,17 @@ def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="Mistral"):
         print("Using Mistral for OCR...")
         mistral_api_key = os.getenv("MISTRAL_API_KEY")
         client = Mistral(api_key=mistral_api_key)
+
+        if isinstance(pdf_path, BytesIO):
+            pdf_stream = pdf_path
+            os.makedirs("./pageindex_uploads", exist_ok=True)
+            # file_id = cuid.cuid()
+            filename = get_pdf_name(pdf_stream)
+            file_path = f"./pageindex_uploads/{filename}.pdf"
+            with open(file_path, "wb") as f:
+                f.write(pdf_stream.getvalue())
+            pdf_path = file_path
+
         file_name = os.path.basename(pdf_path)
         # append cuid after the file name
         file_name = f"{file_name}_{cuid.cuid()}.pdf"
