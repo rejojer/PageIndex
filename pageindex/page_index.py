@@ -1011,7 +1011,7 @@ def page_index_main(doc, opt=None):
 
     ### store text in page_list to file with their physical index
     os.makedirs('./logs', exist_ok=True)
-    with open(f'./logs/{os.path.basename(doc)}_page_list.txt', 'w', encoding='utf-8') as f:
+    with open(f'./logs/{get_pdf_name(doc)}_page_list.txt', 'w', encoding='utf-8') as f:
         for page_index, page_text in enumerate(page_list):
             page_text = f"<physical_index_{page_index+1}>\n{page_text[0]}\n<physical_index_{page_index+1}>\n\n"
             f.write(page_text)
