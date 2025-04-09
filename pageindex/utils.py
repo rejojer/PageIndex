@@ -256,7 +256,7 @@ def extract_text_from_pdf(pdf_path):
 def get_pdf_title(pdf_path):
     pdf_reader = PyPDF2.PdfReader(pdf_path)
     meta = pdf_reader.metadata
-    title = meta.title
+    title = meta.title if meta and meta.title else 'Untitled'
     return title
 
 def get_text_of_pages(pdf_path, start_page, end_page, tag=True):
@@ -301,7 +301,7 @@ def get_pdf_name(pdf_path):
     elif isinstance(pdf_path, BytesIO):
         pdf_reader = PyPDF2.PdfReader(pdf_path)
         meta = pdf_reader.metadata
-        pdf_name = meta.title if meta.title else 'Untitled'
+        pdf_name = meta.title if meta and meta.title else 'Untitled'
         pdf_name = sanitize_filename(pdf_name)
     return pdf_name
 
@@ -443,16 +443,16 @@ def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="Mistral"):
         if isinstance(pdf_path, BytesIO):
             pdf_stream = pdf_path
             os.makedirs("./pageindex_uploads", exist_ok=True)
-            # file_id = cuid.cuid()
-            filename = get_pdf_name(pdf_stream)
-            file_path = f"./pageindex_uploads/{filename}.pdf"
-            with open(file_path, "wb") as f:
+            file_name = get_pdf_name(pdf_stream)
+            file_name = f"{file_name}_{cuid.cuid()}.pdf"
+            save_path = f"./pageindex_uploads/{file_name}"
+            with open(save_path, "wb") as f:
                 f.write(pdf_stream.getvalue())
-            pdf_path = file_path
+            pdf_path = save_path
+        elif isinstance(pdf_path, str) and os.path.isfile(pdf_path) and pdf_path.lower().endswith(".pdf"):
+            file_name = os.path.basename(pdf_path)
+            file_name = f"{file_name}_{cuid.cuid()}.pdf"
 
-        file_name = os.path.basename(pdf_path)
-        # append cuid after the file name
-        file_name = f"{file_name}_{cuid.cuid()}.pdf"
         uploaded_pdf = client.files.upload(
             file={
                 "file_name": file_name,
