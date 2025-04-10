@@ -1,32 +1,24 @@
-# PageIndex
+# 📄 PageIndex by [Vectify AI](https://vectify.ai/pageindex)
 
-
-
-### **Document Index System for Reasoning-Based RAG**
-Are you frustrated with vector database retrieval accuracy for long professional documents? You need a reasoning-based native index for your RAG system.
-
+Are you frustrated with vector database retrieval accuracy for long professional documents? 
 Traditional vector-based retrieval relies heavily on semantic similarity. However, when working with professional documents that require domain expertise and multi-step reasoning, similarity search often falls short.
 
-**Reasoning-Based RAG** offers a better alternative: enabling LLMs to *think* and *reason* their way to the most relevant document sections. Inspired by **AlphaGo**, we leverage **tree search** to perform structured document retrieval.
+**Reasoning-based RAG** offers a better alternative: enabling LLMs to *think* and *reason* their way to the most relevant document sections. Inspired by **AlphaGo**, we propose to use  **tree search** to perform structured document retrieval.
 
-**[PageIndex](https://vectify.ai/pageindex)** is an indexing system that builds search trees from long documents, making them ready for reasoning-based RAG.
+**[PageIndex](https://vectify.ai/pageindex)** is an indexing system that builds search trees from long documents, making them ready for reasoning-based RAG. 
 
-Built by [Vectify AI](https://vectify.ai/pageindex)
-
-## ☁️ Hosted API (Beta)
+### ☁️ Cloud API (Beta)
 Please try our [hosted API for PageIndex](https://pageindex.vectify.ai/).
 The hosted version uses our custom OCR model to recognize PDFs more accurately, providing a better tree structure for complex documents.
 Leave your email in [this form](https://ii2abc2jejf.typeform.com/to/meB40zV0) to receive 1,000 pages for free.
 
----
 
-## 🔍 What is PageIndex?
+# **⭐ What is PageIndex**
 
-**PageIndex** transforms lengthy PDF documents into a semantic **tree structure**, similar to a "table of contents" but optimized for use with Large Language Models (LLMs).
+PageIndex can transform lengthy PDF documents into a semantic **tree structure**, similar to a "table of contents" but optimized for use with Large Language Models (LLMs).
 It’s ideal for: financial reports, regulatory filings, academic textbooks, legal or technical manuals or any document that exceeds LLM context limits.
 
 ### ✅ Key Features
-
 - **Scales to Massive Documents**  
   Designed to handle hundreds or even thousands of pages with ease.
     
@@ -39,9 +31,7 @@ It’s ideal for: financial reports, regulatory filings, academic textbooks, leg
 - **Chunk-Free Segmentation**  
   No arbitrary chunking. Nodes follow the natural structure of the document.
 
----
-
-## 📦 PageIndex Format
+### 📦 PageIndex Format
 
 Here is an example output. See more [example documents](https://github.com/VectifyAI/PageIndex/tree/main/docs) and [generated trees](https://github.com/VectifyAI/PageIndex/tree/main/results).
 
@@ -71,11 +61,34 @@ Here is an example output. See more [example documents](https://github.com/Vecti
 }
 
 ```
-## 🧠 Reasoning-Based RAG with PageIndex
+
+---
+
+# 🧠 Reasoning-Based RAG with PageIndex
 
 Use PageIndex to build **reasoning-based retrieval systems** without relying on semantic similarity. Great for domain-specific tasks where nuance matters.
 
-### 🛠️ Example Prompt
+### 🔖 Preprocessing Workflow Example
+1. Process documents using PageIndex to generate tree structures.
+2. Store the tree structures and their corresponding document IDs in a database table.
+3. Store the contents of each node in a separate table, indexed by node ID and tree ID.
+
+### 🔖 Reasoning-Based RAG Framework Example
+1. Query Preprocessing:
+    - Analyze the query to identify the required knowledge
+2. Document Selection: 
+    - Search the relevant documents and their IDs
+    - Fetch corresponding tree structures from the database
+3. Node Selection:
+    - Search through tree structures to identify relevant nodes
+4. LLM Generation:
+    - Fetch the corresponding contents of the selected nodes from the database
+    - Format and extract the relevant information
+    - Send the assembled context along with the original query to the LLM
+    - Generate contextually informed responses
+
+
+### 🔖 Example Prompt for Node Selection
 
 ```python
 prompt = f"""
@@ -93,8 +106,10 @@ Reply in the following JSON format:
 }}
 """
 ```
+For more examples, see the [API dashboard](https://pageindex.vectify.ai/).
 
-## 🚀 Usage
+---
+# 🚀 Package Usage
 
 Follow these steps to generate a PageIndex tree from a PDF document.
 
@@ -129,15 +144,16 @@ You can customize the processing with additional optional arguments:
 --if-add-doc-description Add doc description (yes/no, default: yes)
 ```
 
+---
+# 🛤 Roadmap
 
-## 🛤 Roadmap
+- [ ]  Detailed examples of document selection, node selection, and RAG pipelines (due 2025/04/14)
+- [ ]  Integration of reasoning-based retrieval and semantic-based retrieval (due 2025/04/21)
+- [ ]  Efficient tree search methods introduction
+- [ ]  Technical report on the design of PageIndex
 
-- [ ]  Document-level retrieval
-- [ ]  Technical report on PageIndex design
-- [ ]  Efficient tree search algorithms for large documents
-- [ ]  Integration with vector-based semantic retrieval
-
-## 📈 Case Study: Mafin 2.5
+---
+# 📈 Case Study: Mafin 2.5
 
 [Mafin 2.5](https://vectify.ai/blog/Mafin2.5) is a state-of-the-art reasoning-based RAG model designed specifically for financial document analysis. Built on top of **PageIndex**, it achieved an impressive **98.7% accuracy** on the [FinanceBench](https://github.com/VectifyAI/Mafin2.5-FinanceBench) benchmark—significantly outperforming traditional vector-based RAG systems.
 
@@ -145,17 +161,17 @@ PageIndex’s hierarchical indexing enabled precise navigation and extraction of
 
 👉 See full [benchmark results](https://github.com/VectifyAI/Mafin2.5-FinanceBench) for detailed comparisons and performance metrics.
 
-## 🚧 Notice
+---
+# 🚧 Notice
+This project is in its early beta development, and all progress will remain open and transparent. We welcome you to raise issues, reach out with questions, or contribute directly to the project.  
 
-This project is in its early beta development, and all progress will remain open and transparent.  
-Due to the non-deterministic nature of large language models (LLMs) and the diverse structures of PDF documents, you may encounter bugs or instability during usage.
+Due to the diverse structures of PDF documents, you may encounter instability during usage. For a more accuracy  and stable version with a leading OCR integration, please try our [hosted API for PageIndex](https://pageindex.vectify.ai/). Leave your email in [this form](https://ii2abc2jejf.typeform.com/to/meB40zV0) to receive 1,000 pages for free.
 
-We welcome you to raise issues, reach out with questions, or contribute directly to the project.  
 Together, let's push forward the revolution of reasoning-based RAG systems.
 
 
-
-## 📬 Contact Us
+---
+# 📬 Contact Us
 
 Need customized support for your documents or reasoning-based RAG system?
 
