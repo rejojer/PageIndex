@@ -490,7 +490,7 @@ def get_text_of_pdf_pages(pdf_pages, start_page, end_page):
 def get_text_of_pdf_pages_with_labels(pdf_pages, start_page, end_page):
     text = ""
     for page_num in range(start_page-1, end_page):
-        text += f"<start_index_{page_num+1}>\n{pdf_pages[page_num][0]}\n<end_index_{page_num+1}>\n"
+        text += f"<physical_index_{page_num+1}>\n{pdf_pages[page_num][0]}\n<physical_index_{page_num+1}>\n"
     return text
 
 def get_number_of_pages(pdf_path):
