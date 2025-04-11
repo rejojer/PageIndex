@@ -2,7 +2,7 @@
 
 Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true *relevance*. But what we really need in retrieval is **relevance** — which requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short.
 
-**Reasoning-based RAG** offers a better alternative: enabling LLMs to *think* and *reason* their way to the most relevant document sections. Inspired by *AlphaGo*, we propose to use  *tree search* to perform structured document retrieval.
+**Reasoning-based RAG** offers a better alternative: enabling LLMs to *think* and *reason* their way to the most relevant document sections. Inspired by AlphaGo, we propose to use  *tree search* to perform structured document retrieval.
 
 **[PageIndex](https://vectify.ai/pageindex)** is a *document indexing system* that builds *search tree structures* from long documents, making them ready for reasoning-based RAG. 
 
@@ -33,7 +33,7 @@ It’s ideal for: financial reports, regulatory filings, academic textbooks, leg
 
 Here is an example output. See more [example documents](https://github.com/VectifyAI/PageIndex/tree/main/docs) and [generated trees](https://github.com/VectifyAI/PageIndex/tree/main/results).
 
-```json
+```
 ...
 {
   "title": "Financial Stability",
