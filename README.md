@@ -1,6 +1,8 @@
-# 📄 PageIndex: Document Index System for Reasoning-based RAG
+# 📄 PageIndex
 
-Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true **relevance**. But what we really need in retrieval is *relevance* — which requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short.
+### PageIndex: Document Indexing System for Reasoning-based RAG
+
+Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true *relevance*. But what we really need in retrieval is **relevance** — which requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short.
 
 **Reasoning-based RAG** offers a better alternative: enabling LLMs to *think* and *reason* their way to the most relevant document sections. Inspired by *AlphaGo*, we propose to use  **tree search** to perform structured document retrieval.
 
