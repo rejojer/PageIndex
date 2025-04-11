@@ -1,6 +1,6 @@
 # 📄 PageIndex
 
-### PageIndex: Document Indexing System for Reasoning-based RAG
+### Document Indexing System for Reasoning-based RAG
 
 Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true *relevance*. But what we really need in retrieval is **relevance** — which requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short.
 
