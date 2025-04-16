@@ -966,30 +966,38 @@ def process_large_node_recursively(node, page_list, opt=None, logger=None):
     
     return node
 
-def tree_parser(page_list, opt, logger=None):    
-    check_toc_result = check_toc(page_list, opt)    
-    logger.info(check_toc_result)
-
-    if check_toc_result['toc_content'] is not None and check_toc_result['page_index_given_in_toc'] == 'yes':
-        toc_with_page_number = meta_processor(
-            page_list, 
-            mode='process_toc_with_page_numbers', 
-            start_index=1, 
-            toc_content=check_toc_result['toc_content'], 
-            toc_page_list=check_toc_result['toc_page_list'], 
-            opt=opt,
-            logger=logger)
+def tree_parser(page_list, opt, doc=None, logger=None):
+    # Try embedded PDF ToC first
+    embedded_toc = extract_embedded_pdf_toc(doc)
+    if embedded_toc:
+        logger.info("Using embedded PDF ToC")
+        toc_with_page_number = add_page_offset_to_toc_json(embedded_toc, offset=0)
+        toc_with_page_number = process_none_page_numbers(toc_with_page_number, page_list, model=opt.model)
     else:
-        toc_with_page_number = meta_processor(
-            page_list, 
-            mode='process_no_toc', 
-            start_index=1, 
-            opt=opt,
-            logger=logger)
+        check_toc_result = check_toc(page_list, opt)
+        logger.info(check_toc_result)
+
+        if check_toc_result['toc_content'] is not None and check_toc_result['page_index_given_in_toc'] == 'yes':
+            toc_with_page_number = meta_processor(
+                page_list, 
+                mode='process_toc_with_page_numbers', 
+                start_index=1, 
+                toc_content=check_toc_result['toc_content'], 
+                toc_page_list=check_toc_result['toc_page_list'], 
+                opt=opt,
+                logger=logger)
+        else:
+            toc_with_page_number = meta_processor(
+                page_list, 
+                mode='process_no_toc', 
+                start_index=1, 
+                opt=opt,
+                logger=logger)
 
     toc_with_page_number = add_preface_if_needed(toc_with_page_number)
     toc_with_page_number = check_title_appearance_in_start_parallel(toc_with_page_number, page_list, model=opt.model, logger=logger)
     toc_tree = post_processing(toc_with_page_number, len(page_list))
+
     for node in toc_tree:
         process_large_node_recursively(node, page_list, opt, logger=logger)
     
@@ -1012,7 +1020,7 @@ def page_index_main(doc, opt=None):
     logger.info({'total_page_number': len(page_list)})
     logger.info({'total_token': sum([page[1] for page in page_list])})
     
-    structure = tree_parser(page_list, opt, logger=logger)
+    structure = tree_parser(page_list, opt, doc=doc, logger=logger)
     if opt.if_add_node_id == 'yes':
         write_node_id(structure)    
     if opt.if_add_node_summary == 'yes':

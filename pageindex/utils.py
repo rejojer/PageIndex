@@ -304,6 +304,39 @@ def get_pdf_name(pdf_path):
     return pdf_name
 
 
+def extract_embedded_pdf_toc(pdf_path):
+    if not pdf_path:
+        return None
+    
+    doc = pymupdf.open(pdf_path)
+    raw_toc = doc.get_toc()  # each entry: [level, title, page]
+    if not raw_toc:
+        return None
+
+    fixed_toc = []
+    counters = []  # section numbers
+
+    for entry in raw_toc:
+        level, title, page = entry
+        if level <= 0 or page <= 0 or not title.strip():
+            continue
+
+        while len(counters) < level:
+            counters.append(0)
+
+        counters = counters[:level]
+        counters[-1] += 1
+
+        structure_index = ".".join(str(num) for num in counters)
+        fixed_toc.append({
+            "structure": structure_index,
+            "title": title.strip(),
+            "page": page
+        })
+
+    return fixed_toc
+
+
 class JsonLogger:
     def __init__(self, file_path):
         # Extract PDF name for logger name
