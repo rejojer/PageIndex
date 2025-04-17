@@ -970,14 +970,14 @@ def tree_parser(page_list, opt, doc=None, logger=None):
     # Try embedded PDF ToC first
     embedded_toc = extract_embedded_pdf_toc(doc)
     if embedded_toc:
-        logger.info("Using embedded PDF ToC")
+        logger.info(f"Using embedded PDF ToC ({len(embedded_toc)} entries)")
         toc_with_page_number = add_page_offset_to_toc_json(embedded_toc, offset=0)
         toc_with_page_number = process_none_page_numbers(toc_with_page_number, page_list, model=opt.model)
     else:
         check_toc_result = check_toc(page_list, opt)
         logger.info(check_toc_result)
 
-        if check_toc_result['toc_content'] is not None and check_toc_result['page_index_given_in_toc'] == 'yes':
+        if check_toc_result.get("toc_content") and check_toc_result["toc_content"].strip() and check_toc_result["page_index_given_in_toc"] == "yes":
             toc_with_page_number = meta_processor(
                 page_list, 
                 mode='process_toc_with_page_numbers', 

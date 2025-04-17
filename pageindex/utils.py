@@ -307,9 +307,13 @@ def get_pdf_name(pdf_path):
 def extract_embedded_pdf_toc(pdf_path):
     if not pdf_path:
         return None
+    try:
+        doc = pymupdf.open(pdf_path)
+        raw_toc = doc.get_toc()  # each entry: [level, title, page]
+    except Exception as e:
+        print(f"Error extracting embedded TOC: {e}")
+        return None
     
-    doc = pymupdf.open(pdf_path)
-    raw_toc = doc.get_toc()  # each entry: [level, title, page]
     if not raw_toc:
         return None
 
