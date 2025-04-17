@@ -571,18 +571,6 @@ def convert_page_to_int(data):
                 pass
     return data
 
-def write_node_id(data, node_id=0):
-    if isinstance(data, dict):
-        data['node_id'] = str(node_id).zfill(4)
-        node_id += 1
-        for key in list(data.keys()):
-            if 'nodes' in key:
-                node_id = write_node_id(data[key], node_id)
-    elif isinstance(data, list):
-        for index in range(len(data)):
-            node_id = write_node_id(data[index], node_id)
-    return node_id
-
 
 def add_node_text(node, pdf_pages):
     if isinstance(node, dict):
