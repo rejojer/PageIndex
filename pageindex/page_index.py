@@ -505,14 +505,15 @@ def generate_toc_continue(toc_content, part, model="gpt-4o-2024-11-20"):
     For the title, you need to extract the original title from the text, only fix the space inconsistency.
 
     The provided text contains tags like <physical_index_X> and <physical_index_X> to indicate the start and end of page X. \
-
+    
+    For the physical_index, you need to extract the physical index of the start of the section from the text. Keep the <physical_index_X> format.
 
     The response should be in the following format. 
         [
             {
-                "structure": <structure index, "x.x.x" or None> (string),
+                "structure": <structure index, "x.x.x"> (string),
                 "title": <title of the section, keep the original title>,
-                "physical_index": "<physical_index_X> (keep the format)" or None
+                "physical_index": "<physical_index_X> (keep the format)"
             },
             ...
         ]    
@@ -538,13 +539,15 @@ def generate_toc_init(part, model=None):
 
     The provided text contains tags like <physical_index_X> and <physical_index_X> to indicate the start and end of page X. 
 
+    For the physical_index, you need to extract the physical index of the start of the section from the text. Keep the <physical_index_X> format.
+
     The response should be in the following format. 
         [
-            {
-                "structure": <structure index, "x.x.x" or None> (string),
+            {{
+                "structure": <structure index, "x.x.x"> (string),
                 "title": <title of the section, keep the original title>,
-                "physical_index": "<physical_index_X> (keep the format)" or None
-            },
+                "physical_index": "<physical_index_X> (keep the format)"
+            }},
             
         ],
 
@@ -570,6 +573,7 @@ def process_no_toc(page_list, start_index=1, model=None, logger=None):
     logger.info(f'len(group_texts): {len(group_texts)}')
 
     toc_with_page_number= generate_toc_init(group_texts[0], model)
+    print('toc_with_page_number (init):', toc_with_page_number)
     for group_text in group_texts[1:]:
         toc_with_page_number_additional = generate_toc_continue(toc_with_page_number, group_text, model)    
         toc_with_page_number.extend(toc_with_page_number_additional)
@@ -923,6 +927,10 @@ def meta_processor(page_list, mode=None, toc_content=None, toc_page_list=None, s
             
     toc_with_page_number = [item for item in toc_with_page_number if item.get('physical_index') is not None] 
     accuracy, incorrect_results = verify_toc(page_list, toc_with_page_number, start_index=start_index, model=opt.model)
+    
+    print(f'accuracy: {accuracy*100:.2f}%')
+    print(f'\nincorrect_results: {incorrect_results}\n')
+    print('toc_with_page_number:', toc_with_page_number)
         
     logger.info({
         'mode': 'process_toc_with_page_numbers',
