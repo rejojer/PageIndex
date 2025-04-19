@@ -14,6 +14,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import logging
 import yaml
+import cuid
+from mistralai import Mistral
 from pathlib import Path
 from types import SimpleNamespace as config
 
@@ -445,26 +447,74 @@ def add_preface_if_needed(data):
 
 
 
-def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="PyPDF2"):
+def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="Mistral"):
+    enc = tiktoken.encoding_for_model(model)
     if pdf_parser == "PyPDF2":
         pdf_reader = PyPDF2.PdfReader(pdf_path)
+        page_list = []
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            page_text = page.extract_text()
+            token_length = len(enc.encode(page_text))
+            page_list.append((page_text, token_length))
+        return page_list
+    
     elif pdf_parser == "PyMuPDF":
-        pdf_reader = pymupdf.open(pdf_path)
+        if isinstance(pdf_path, BytesIO):
+            pdf_stream = pdf_path
+            doc = pymupdf.open(stream=pdf_stream, filetype="pdf")
+        elif isinstance(pdf_path, str) and os.path.isfile(pdf_path) and pdf_path.lower().endswith(".pdf"):
+            doc = pymupdf.open(pdf_path)
+        page_list = []
+        for page in doc:
+            page_text = page.get_text()
+            token_length = len(enc.encode(page_text))
+            page_list.append((page_text, token_length))
+        return page_list
+    
+    elif pdf_parser == "Mistral":
+        print("Using Mistral for OCR...")
+        mistral_api_key = os.getenv("MISTRAL_API_KEY")
+        client = Mistral(api_key=mistral_api_key)
+
+        if isinstance(pdf_path, BytesIO):
+            pdf_stream = pdf_path
+            os.makedirs("./pageindex_uploads", exist_ok=True)
+            file_name = get_pdf_name(pdf_stream)
+            file_name = f"{file_name}_{cuid.cuid()}.pdf"
+            save_path = f"./pageindex_uploads/{file_name}"
+            with open(save_path, "wb") as f:
+                f.write(pdf_stream.getvalue())
+            pdf_path = save_path
+        elif isinstance(pdf_path, str) and os.path.isfile(pdf_path) and pdf_path.lower().endswith(".pdf"):
+            file_name = os.path.basename(pdf_path)
+            file_name = f"{file_name}_{cuid.cuid()}.pdf"
+
+        uploaded_pdf = client.files.upload(
+            file={
+                "file_name": file_name,
+                "content": open(pdf_path, "rb"),
+            },
+            purpose="ocr"
+        )
+        signed_url = client.files.get_signed_url(file_id=uploaded_pdf.id)
+        ocr_response = client.ocr.process(
+            model="mistral-ocr-latest",
+            document={
+                "type": "document_url",
+                "document_url": signed_url.url,
+            }
+        )
+        page_list = []
+        for page in ocr_response.pages:
+            page_text = page.markdown
+            token_length = len(enc.encode(page_text))
+            page_list.append((page_text, token_length))
+        print("Finished OCR with Mistral...")
+        return page_list
+
     else:
         raise ValueError(f"Unsupported PDF parser: {pdf_parser}")
-
-    enc = tiktoken.encoding_for_model(model)
-    
-    page_list = []
-    for page_num in range(len(pdf_reader.pages)):
-        page = pdf_reader.pages[page_num]
-        page_text = page.extract_text()
-        token_length = len(enc.encode(page_text))
-        page_list.append((page_text, token_length))
-    
-    return page_list
-
-
 
         
 
@@ -472,6 +522,12 @@ def get_text_of_pdf_pages(pdf_pages, start_page, end_page):
     text = ""
     for page_num in range(start_page-1, end_page):
         text += pdf_pages[page_num][0]
+    return text
+
+def get_text_of_pdf_pages_with_labels(pdf_pages, start_page, end_page):
+    text = ""
+    for page_num in range(start_page-1, end_page):
+        text += f"<physical_index_{page_num+1}>\n{pdf_pages[page_num][0]}\n<physical_index_{page_num+1}>\n"
     return text
 
 def get_number_of_pages(pdf_path):
@@ -583,6 +639,20 @@ def add_node_text(node, pdf_pages):
         for index in range(len(node)):
             add_node_text(node[index], pdf_pages)
     return
+
+
+def add_node_text_with_labels(node, pdf_pages):
+    if isinstance(node, dict):
+        start_page = node.get('start_index')
+        end_page = node.get('end_index')
+        node['text'] = get_text_of_pdf_pages_with_labels(pdf_pages, start_page, end_page)
+        if 'nodes' in node:
+            add_node_text_with_labels(node['nodes'], pdf_pages)
+    elif isinstance(node, list):
+        for index in range(len(node)):
+            add_node_text_with_labels(node[index], pdf_pages)
+    return
+
 
 async def generate_node_summary(node, model=None):
     prompt = f"""You are given a part of a document, your task is to generate a description of the partial document about what are main points covered in the partial document.
