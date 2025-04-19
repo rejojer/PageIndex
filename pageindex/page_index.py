@@ -927,10 +927,6 @@ def meta_processor(page_list, mode=None, toc_content=None, toc_page_list=None, s
             
     toc_with_page_number = [item for item in toc_with_page_number if item.get('physical_index') is not None] 
     accuracy, incorrect_results = verify_toc(page_list, toc_with_page_number, start_index=start_index, model=opt.model)
-    
-    print(f'accuracy: {accuracy*100:.2f}%')
-    print(f'\nincorrect_results: {incorrect_results}\n')
-    print('toc_with_page_number:', toc_with_page_number)
         
     logger.info({
         'mode': 'process_toc_with_page_numbers',
