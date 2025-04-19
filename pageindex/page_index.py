@@ -510,14 +510,15 @@ def generate_toc_continue(toc_content, part, model="gpt-4o-2024-11-20"):
     For the title, you need to extract the original title from the text, only fix the space inconsistency.
 
     The provided text contains tags like <physical_index_X> and <physical_index_X> to indicate the start and end of page X. \
-
+    
+    For the physical_index, you need to extract the physical index of the start of the section from the text. Keep the <physical_index_X> format.
 
     The response should be in the following format. 
         [
             {
-                "structure": <structure index, "x.x.x" or None> (string),
+                "structure": <structure index, "x.x.x"> (string),
                 "title": <title of the section, keep the original title>,
-                "physical_index": "<physical_index_X> (keep the format)" or None
+                "physical_index": "<physical_index_X> (keep the format)"
             },
             ...
         ]    
@@ -543,13 +544,15 @@ def generate_toc_init(part, model=None):
 
     The provided text contains tags like <physical_index_X> and <physical_index_X> to indicate the start and end of page X. 
 
+    For the physical_index, you need to extract the physical index of the start of the section from the text. Keep the <physical_index_X> format.
+
     The response should be in the following format. 
         [
-            {
-                "structure": <structure index, "x.x.x" or None> (string),
+            {{
+                "structure": <structure index, "x.x.x"> (string),
                 "title": <title of the section, keep the original title>,
-                "physical_index": "<physical_index_X> (keep the format)" or None
-            },
+                "physical_index": "<physical_index_X> (keep the format)"
+            }},
             
         ],
 
@@ -1036,7 +1039,9 @@ def page_index_main(doc, opt=None):
     if opt.if_add_node_summary == 'yes':
         add_node_text(structure, page_list)
         asyncio.run(generate_summaries_for_structure(structure, model=opt.model))
-        remove_structure_text(structure)  
+        remove_structure_text(structure)
+        if opt.if_add_node_text == 'yes':
+            add_node_text_with_labels(structure, page_list)
         if opt.if_add_doc_description == 'yes':
             doc_description = generate_doc_description(structure, model=opt.model)
             return {
@@ -1051,7 +1056,7 @@ def page_index_main(doc, opt=None):
 
 
 def page_index(doc, model=None, toc_check_page_num=None, max_page_num_each_node=None, max_token_num_each_node=None,
-               if_add_node_id=None, if_add_node_summary=None, if_add_doc_description=None):
+               if_add_node_id=None, if_add_node_summary=None, if_add_doc_description=None, if_add_node_text=None):
     
     user_opt = {
         arg: value for arg, value in locals().items()
