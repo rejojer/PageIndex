@@ -573,7 +573,6 @@ def process_no_toc(page_list, start_index=1, model=None, logger=None):
     logger.info(f'len(group_texts): {len(group_texts)}')
 
     toc_with_page_number= generate_toc_init(group_texts[0], model)
-    print('toc_with_page_number (init):', toc_with_page_number)
     for group_text in group_texts[1:]:
         toc_with_page_number_additional = generate_toc_continue(toc_with_page_number, group_text, model)    
         toc_with_page_number.extend(toc_with_page_number_additional)
@@ -1012,13 +1011,6 @@ def page_index_main(doc, opt=None):
 
     print('Parsing PDF...')
     page_list = get_page_tokens(doc)
-
-    ### store text in page_list to file with their physical index
-    os.makedirs('./logs', exist_ok=True)
-    with open(f'./logs/{get_pdf_name(doc)}_page_list.txt', 'w', encoding='utf-8') as f:
-        for page_index, page_text in enumerate(page_list):
-            page_text = f"<physical_index_{page_index+1}>\n{page_text[0]}\n<physical_index_{page_index+1}>\n\n"
-            f.write(page_text)
 
     logger.info({'total_page_number': len(page_list)})
     logger.info({'total_token': sum([page[1] for page in page_list])})
