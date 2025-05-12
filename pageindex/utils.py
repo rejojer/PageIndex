@@ -306,6 +306,43 @@ def get_pdf_name(pdf_path):
     return pdf_name
 
 
+def extract_embedded_pdf_toc(pdf_path):
+    if not pdf_path:
+        return None
+    try:
+        doc = pymupdf.open(pdf_path)
+        raw_toc = doc.get_toc()  # each entry: [level, title, page]
+    except Exception as e:
+        print(f"Error extracting embedded TOC: {e}")
+        return None
+    
+    if not raw_toc:
+        return None
+
+    fixed_toc = []
+    counters = []  # section numbers
+
+    for entry in raw_toc:
+        level, title, page = entry
+        if level <= 0 or page <= 0 or not title.strip():
+            continue
+
+        while len(counters) < level:
+            counters.append(0)
+
+        counters = counters[:level]
+        counters[-1] += 1
+
+        structure_index = ".".join(str(num) for num in counters)
+        fixed_toc.append({
+            "structure": structure_index,
+            "title": title.strip(),
+            "page": page
+        })
+
+    return fixed_toc
+
+
 class JsonLogger:
     def __init__(self, file_path):
         # Extract PDF name for logger name
@@ -589,18 +626,6 @@ def convert_page_to_int(data):
                 # Keep original value if conversion fails
                 pass
     return data
-
-def write_node_id(data, node_id=0):
-    if isinstance(data, dict):
-        data['node_id'] = str(node_id).zfill(4)
-        node_id += 1
-        for key in list(data.keys()):
-            if 'nodes' in key:
-                node_id = write_node_id(data[key], node_id)
-    elif isinstance(data, list):
-        for index in range(len(data)):
-            node_id = write_node_id(data[index], node_id)
-    return node_id
 
 
 def add_node_text(node, pdf_pages):
