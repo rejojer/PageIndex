@@ -978,6 +978,7 @@ async def tree_parser(page_list, opt, doc=None, logger=None):
     # Try embedded PDF ToC first
     embedded_toc = extract_embedded_pdf_toc(doc)
     if embedded_toc:
+        print("embedded PDF ToC found...")
         logger.info(f"Using embedded PDF ToC ({len(embedded_toc)} entries)")
         toc_with_page_number = add_page_offset_to_toc_json(embedded_toc, offset=0)
         toc_with_page_number = process_none_page_numbers(toc_with_page_number, page_list, model=opt.model)
