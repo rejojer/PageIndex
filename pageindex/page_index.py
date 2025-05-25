@@ -19,6 +19,11 @@ async def check_title_appearance(item, page_list, start_index=1, model=None):
     
     
     page_number = item['physical_index']
+
+    # check if page_number-start_index is valid, temp fix
+    if page_number-start_index < 0 or page_number-start_index >= len(page_list):
+        return {'list_index': item.get('list_index'), 'answer': 'no', 'title':title, 'page_number': None}
+    
     page_text = page_list[page_number-start_index][0]
 
     
@@ -721,8 +726,48 @@ def check_toc(page_list, opt=None):
             return {'toc_content': toc_json['toc_content'], 'toc_page_list': toc_page_list, 'page_index_given_in_toc': 'no'}
 
 
+def check_meaningful_toc(toc, model="gpt-4o-2024-11-20"):
+    prompt = """
+    You are an expert in document analysis. Your task is to review the extracted Table of Contents (ToC) from a document and determine if it is a valid and meaningful ToC. A meaningful ToC should contain descriptive section or chapter titles (e.g., "Introduction", "Methods", "Results", "Chapter 1: Overview", "2.2 Design Principles") that indicate the document's structure and topics.
 
+    The input ToC is in JSON format. The structure variable is the numeric system which represents the index of the hierarchy section in the table of contents. For example, the first section has structure index 1, the first subsection has structure index 1.1, the second subsection has structure index 1.2, etc. The title and page variable are the title of the section and the page number of the section, respectively.
 
+    Sometimes, automated extraction produces unmeaningful or generic ToC entries such as:
+    - "page x"
+    - "slide 1"
+    - "slide page 3"
+    - "document page 2"
+    - Only numbers (e.g., "1", "2", "3")
+    - Repeated or boilerplate text not related to actual content structure
+
+    Instructions:
+    1. Review the provided list of ToC entries.
+    2. Check if the majority of entries are generic or simply refer to page numbers or slides without indicating content or structure.
+    3. If the ToC contains mostly unmeaningful entries (as above), classify it as INVALID and briefly explain why.
+    4. If the ToC contains mostly meaningful section titles, classify it as VALID and briefly explain your reasoning.
+
+    Examples of INVALID ToC:
+    - ["page 1", "page 2", "page 3", "slide 4"]
+    - ["Slide Page 1", "Slide Page 2", "Document Page 3"]
+    - ["1", "2", "3", "4", "5"]
+
+    Examples of VALID ToC:
+    - ["Introduction", "Experimental Methods", "Results and Discussion", "Conclusion"]
+    - ["1. Background", "2. Research Methodology", "3. Analysis", "4. Summary"]
+
+    Reply in a JSON format:
+    {
+        "thinking": <why do you think the table of contents is meaningful or not>,
+        "classification": "VALID or INVALID"
+    }
+    Directly return the final JSON structure. Do not output anything else."""
+
+    response = ChatGPT_API(model=model, prompt=prompt + '\nTable of contents:\n' + str(toc))
+    json_content = extract_json(response)    
+    if json_content['classification'].lower() == 'valid':
+        return True
+    else:
+        return False
 
 
 ################### fix incorrect toc #########################################################
@@ -865,6 +910,8 @@ async def verify_toc(page_list, list_result, start_index=1, N=None, model=None):
             last_physical_index = item['physical_index']
             break
     
+    # print(f'last_physical_index: {last_physical_index}')
+    # print(f'len(page_list): {len(page_list)}')
     # Early return if we don't have valid physical indices
     if last_physical_index is None or last_physical_index < len(page_list)/2:
         return 0, []
@@ -943,6 +990,11 @@ async def meta_processor(page_list, mode=None, toc_content=None, toc_page_list=N
         elif mode == 'process_toc_no_page_numbers':
             return await meta_processor(page_list, mode='process_no_toc', start_index=start_index, opt=opt, logger=logger)
         else:
+            # print('*** Processing failed, mode:', mode)
+            # print('*** toc_with_page_number:', toc_with_page_number)
+            # print('*** incorrect_results:', incorrect_results)
+            # print('*** accuracy:', accuracy)
+            # print('*** toc_content:', toc_content)
             raise Exception('Processing failed')
         
  
@@ -977,6 +1029,10 @@ async def process_large_node_recursively(node, page_list, opt=None, logger=None)
 async def tree_parser(page_list, opt, doc=None, logger=None):
     # Try embedded PDF ToC first
     embedded_toc = extract_embedded_pdf_toc(doc)
+    # print("embedded PDF ToC:", embedded_toc)
+    if not check_meaningful_toc(embedded_toc, model=opt.model):
+        print("embedded PDF ToC is not meaningful, using auto-generated ToC...")
+        embedded_toc = None
     if embedded_toc:
         print("embedded PDF ToC found...")
         logger.info(f"Using embedded PDF ToC ({len(embedded_toc)} entries)")
