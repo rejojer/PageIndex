@@ -1093,12 +1093,12 @@ def page_index_main(doc, opt=None):
     structure = asyncio.run(tree_parser(page_list, opt, doc=doc, logger=logger))
     if opt.if_add_node_id == 'yes':
         write_node_id(structure)    
+    if opt.if_add_node_text == 'yes':
+        add_node_text_with_labels(structure, page_list)    
     if opt.if_add_node_summary == 'yes':
         add_node_text(structure, page_list)
         asyncio.run(generate_summaries_for_structure(structure, model=opt.model))
         remove_structure_text(structure)
-        if opt.if_add_node_text == 'yes':
-            add_node_text_with_labels(structure, page_list)
         if opt.if_add_doc_description == 'yes':
             doc_description = generate_doc_description(structure, model=opt.model)
             return {
