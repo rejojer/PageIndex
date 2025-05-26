@@ -15,6 +15,7 @@ load_dotenv()
 import logging
 import yaml
 import cuid
+import re
 from mistralai import Mistral
 from pathlib import Path
 from types import SimpleNamespace as config
@@ -657,6 +658,37 @@ def add_node_text_with_labels(node, pdf_pages):
     elif isinstance(node, list):
         for index in range(len(node)):
             add_node_text_with_labels(node[index], pdf_pages)
+    return
+
+
+def add_node_text_without_labels(node, pdf_pages):
+    if isinstance(node, dict):
+        start_page = node.get('start_index')
+        end_page = node.get('end_index')
+        node['text'] = get_text_of_pdf_pages(pdf_pages, start_page, end_page)
+        if 'nodes' in node:
+            add_node_text_without_labels(node['nodes'], pdf_pages)
+    elif isinstance(node, list):
+        for index in range(len(node)):
+            add_node_text_without_labels(node[index], pdf_pages)
+    return
+
+
+def remove_edge_label(text):
+    if not isinstance(text, str):
+        return text
+    text = re.sub(r'^<physical_index_\d+>\n', '', text, count=1)
+    text = re.sub(r'\n<physical_index_\d+>\n$', '', text, count=1)
+    return text
+
+def remove_labels_from_node_text(node):
+    if isinstance(node, dict):
+        node['text'] = remove_edge_label(node.get('text', ''))
+        if 'nodes' in node:
+            remove_labels_from_node_text(node['nodes'])
+    elif isinstance(node, list):
+        for item in node:
+            remove_labels_from_node_text(item)
     return
 
 
