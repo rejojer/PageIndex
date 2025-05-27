@@ -528,7 +528,7 @@ def get_page_tokens(pdf_path, model="gpt-4o-2024-11-20", pdf_parser="Mistral"):
 def get_text_of_pdf_pages(pdf_pages, start_page, end_page):
     text = ""
     for page_num in range(start_page-1, end_page):
-        text += pdf_pages[page_num][0]
+        text += pdf_pages[page_num][0] + "\n"
     return text
 
 def get_text_of_pdf_pages_with_labels(pdf_pages, start_page, end_page):
@@ -674,16 +674,15 @@ def add_node_text_without_labels(node, pdf_pages):
     return
 
 
-def remove_edge_label(text):
+def extract_and_concat_page_texts(text):
     if not isinstance(text, str):
         return text
-    text = re.sub(r'^<physical_index_\d+>\n', '', text, count=1)
-    text = re.sub(r'\n<physical_index_\d+>\n$', '', text, count=1)
-    return text
+    segments = re.findall(r'<physical_index_\d+>\n(.*?)\n<physical_index_\d+>\n', text, re.DOTALL)
+    return '\n'.join(segments)
 
 def remove_labels_from_node_text(node):
     if isinstance(node, dict):
-        node['text'] = remove_edge_label(node.get('text', ''))
+        node['text'] = extract_and_concat_page_texts(node.get('text', ''))
         if 'nodes' in node:
             remove_labels_from_node_text(node['nodes'])
     elif isinstance(node, list):
