@@ -34,7 +34,7 @@
 #### 📢 Recent Updates
 
 **Articles:**
-* 🧩 [**PageIndex Overview**](https://pageindex.ai/blog/pageindex-intro): Introduces the PageIndex framework: an *agentic, in-context* **tree index** that enables LLMs to perform **reasoning-based, human-like retrieval** over long documents, without vectors or chunking.
+* 🧩 [**The PageIndex Overview**](https://pageindex.ai/blog/pageindex-intro): Introduces the PageIndex framework: an *agentic, in-context* **tree index** that enables LLMs to perform **reasoning-based, human-like retrieval** over long documents, without vectors or chunking.
 * ["Do We Still Need OCR?"](https://pageindex.ai/blog/do-we-need-ocr): Explores how vision-based, reasoning-native RAG challenges the traditional OCR pipeline, and why the future of document AI might be *vectorless* and *vision-based*.
 
 **🧪 Cookbooks:**
