@@ -29,17 +29,17 @@
 
 #### 🚨 New Releases:
 - 📖 [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document analyst agent, designed for professional long documents.
-- 🔌 [**PageIndex MCP**](https://pageindex.ai/mcp): Bring PageIndex into Claude, Cursor, or any MCP-enabled agent. Chat with long PDFs the reasoning-based, human-like way.
+- 🔌 [**PageIndex MCP**](https://pageindex.ai/mcp): Bring PageIndex into Claude, Cursor, or any MCP-enabled agent. Chat with long PDFs in a reasoning-based, human-like way.
 
 #### 📢 Recent Updates
 
 **Articles:**
-* 🧩 [**PageIndex Intro**](https://pageindex.ai/blog/pageindex-intro): Introduces the PageIndex framework — an *agentic, in-context* **tree index** that enables LLMs to perform **reasoning-based, human-like retrieval** over long documents, without vectors or chunking.
+* 🧩 [**The PageIndex Overview**](https://pageindex.ai/blog/pageindex-intro): Introduces the PageIndex framework — an *agentic, in-context* **tree index** that enables LLMs to perform **reasoning-based, human-like retrieval** over long documents, without vectors or chunking.
 * ["Do We Still Need OCR?"](https://pageindex.ai/blog/do-we-need-ocr): Explores how vision-based, reasoning-native RAG challenges the traditional OCR pipeline, and why the future of document AI might be *vectorless* and *vision-based*.
 
 **🧪 Cookbooks:**
-* [**Vectorless RAG**](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb): A minimal, hands-on example of reasoning-based RAG using **PageIndex** — no vectors, no chunking, and human-like retrieval.
-* [Vision-based Vectorless RAG](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow — retrieving and reasoning directly over PDF page images.
+* [**Vectorless RAG** notebook](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb): A minimal, hands-on example of reasoning-based RAG using **PageIndex** — no vectors, no chunking, and human-like retrieval.
+* [Vision-based Vectorless RAG notebook](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow — retrieving and reasoning directly over PDF page images.
 
 
 # 📑 Introduction to PageIndex
@@ -63,7 +63,7 @@ Compared to traditional *vector-based RAG*, **PageIndex** features:
 - **Human-like Retrieval**: Simulates how human experts navigate and extract knowledge from complex documents.
 - **Transparent Retrieval Process**: Retrieval based on reasoning — traceable and interpretable. Say goodbye to approximate vector search ("vibe retrieval").
 
-PageIndex powers a reasoning-based RAG system that achieved [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench, showing state-of-the-art performance in professional document analysis (see our [blog post](https://vectify.ai/blog/Mafin2.5) for details).
+PageIndex powers a reasoning-based RAG system that achieved [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench, showing **state-of-the-art** performance in professional document analysis (see our [blog post](https://vectify.ai/blog/Mafin2.5) for details).
 
 ### ⚙️ Deployment Options
 - 🛠️ Self-host — run locally with this open-source repo.
@@ -73,7 +73,6 @@ PageIndex powers a reasoning-based RAG system that achieved [98.7% accuracy](htt
 
 - Try the [_**Vectorless RAG Notebook**_](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb) — a *minimal*, hands-on example of reasoning-based RAG using **PageIndex**.
 - Experiment with the [*Vision-based Vectorless RAG*](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb) — no OCR; a minimal, reasoning-native RAG pipeline that works directly over page images.
-<p align="center">
   
 <div align="center">
   <a href="https://colab.research.google.com/github/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb" target="_blank" rel="noopener">
@@ -92,8 +91,8 @@ PageIndex can transform lengthy PDF documents into a semantic **tree structure**
 
 Here is an example output. See more [example documents](https://github.com/VectifyAI/PageIndex/tree/main/tests/pdfs) and [generated trees](https://github.com/VectifyAI/PageIndex/tree/main/tests/results).
 
-```python
-...
+```json
+// ...
 {
   "title": "Financial Stability",
   "node_id": "0006",
@@ -117,7 +116,7 @@ Here is an example output. See more [example documents](https://github.com/Vecti
     }
   ]
 }
-...
+//...
 ```
 
  You can either generate the PageIndex tree structure with this open-source repo, or try our ☁️ **Cloud Service** — instantly accessible via our 🚀 [Agent](https://chat.pageindex.ai/), 🖥️ [Dashboard](https://dash.pageindex.ai/) or 🔌 [API](https://docs.pageindex.ai/quickstart).
@@ -167,7 +166,7 @@ You can customize the processing with additional optional arguments:
 <details>
 <summary><strong>Markdown support</strong></summary>
 <br>
-We also provide a markdown support for PageIndex. You can use the `-md` flag to generate a tree structure for a markdown file.
+We also provide a markdown support for PageIndex. You can use the `-md_path` flag to generate a tree structure for a markdown file.
 
 ```bash
 python3 run_pageindex.py --md_path /path/to/your/document.md
@@ -195,7 +194,7 @@ To address this, we introduced PageIndex OCR — the first long-context OCR mode
 
 # 📈 Case Study: SOTA on Finance QA Benchmark
 
-[Mafin 2.5](https://vectify.ai/mafin) is a reasoing-based RAG system for financial document analysis, powered by **PageIndex**. It achieved a state-of-the-art [**98.7% accuracy**](https://vectify.ai/blog/Mafin2.5) on the [FinanceBench](https://arxiv.org/abs/2311.11944) benchmark — significantly outperforming traditional vector-based RAG systems.
+[Mafin 2.5](https://vectify.ai/mafin) is a reasoning-based RAG system for financial document analysis, powered by **PageIndex**. It achieved a state-of-the-art [**98.7% accuracy**](https://vectify.ai/blog/Mafin2.5) on the [FinanceBench](https://arxiv.org/abs/2311.11944) benchmark — significantly outperforming traditional vector-based RAG systems.
 
 PageIndex's hierarchical indexing enabled precise navigation and extraction of relevant content from complex financial reports, such as SEC filings and earnings disclosures.
 
