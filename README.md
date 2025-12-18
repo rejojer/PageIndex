@@ -68,7 +68,7 @@ PageIndex powers a reasoning-based RAG system that achieved [98.7% accuracy](htt
 
 ### 📍 Explore PageIndex
 
-Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out this [GitHub repo](https://github.com/VectifyAI/PageIndex) for open-source code, and our [cookbooks](https://docs.pageindex.ai/cookbook) and [tutorials](https://docs.pageindex.ai/tutorials) for additional usage guides and examples. The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out our [GitHub repo](https://github.com/VectifyAI/PageIndex) for open-source code, and our [cookbooks](https://docs.pageindex.ai/cookbook) and [tutorials](https://docs.pageindex.ai/tutorials) for additional usage guides and examples. The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 
 ### ⚙️ Deployment Options
 - 🛠️ Self-host — run locally with this open-source repo.
