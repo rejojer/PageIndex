@@ -59,7 +59,7 @@ Inspired by AlphaGo, we propose **[PageIndex](https://vectify.ai/pageindex)** �
 ### 🧩 Features 
 
 Compared to traditional *vector-based RAG*, **PageIndex** features:
-- **No Vector DB**: Uses document structure and LLM reasoning for retrieval, instead of vector search.
+- **No Vector DB**: Uses document structure and LLM reasoning for retrieval, instead of vector similarity search.
 - **No Chunking**: Documents are organized into natural sections, not artificial chunks.
 - **Human-like Retrieval**: Simulates how human experts navigate and extract knowledge from complex documents.
 - **Better Explainability and Traceability**: Retrieval is based on reasoning — traceable and interpretable, with page and section references. No more opaque, approximate vector search ("vibe retrieval").
