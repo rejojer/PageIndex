@@ -39,8 +39,8 @@
 <!-- - [Do We Still Need OCR?](https://pageindex.ai/blog/do-we-need-ocr): Explores how vision-based, reasoning-native RAG challenges the traditional OCR pipeline, and why the future of document AI might be *vectorless* and *vision-based*. -->
 
  **🧪 Cookbooks:**
-- [Vectorless RAG](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb): A minimal, hands-on example of reasoning-based RAG using **PageIndex** — no vectors, no chunking, and human-like retrieval.
-- [Vision-based Vectorless RAG](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow that retrieves and reasons directly over PDF page images.
+- [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using **PageIndex** — no vectors, no chunking, and human-like retrieval.
+- [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow that retrieves and reasons directly over PDF page images.
 </details>
 
 # 📑 Introduction to PageIndex
