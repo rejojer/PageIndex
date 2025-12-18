@@ -30,7 +30,7 @@
 <summary><h2>📢 Recent Updates</h2></summary>
 
  **🔥 New Releases:**
-- [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent platform built for professional long documents. Could also be integrated via the [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
+- [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent platform built for professional long documents. It can also be integrated via the [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
 <!-- - [**PageIndex Chat API**](https://docs.pageindex.ai/quickstart): An API that brings PageIndex’s advanced long-document intelligence directly into your applications and workflows. -->
 <!-- - [PageIndex MCP](https://pageindex.ai/mcp): Bring PageIndex into Claude, Cursor, or any MCP-enabled agent. Chat with long PDFs in a reasoning-based, human-like way. -->
  
@@ -39,7 +39,7 @@
 <!-- - [Do We Still Need OCR?](https://pageindex.ai/blog/do-we-need-ocr): Explores how vision-based, reasoning-native RAG challenges the traditional OCR pipeline, and why the future of document AI might be *vectorless* and *vision-based*. -->
 
  **🧪 Cookbooks:**
-- [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using **PageIndex** — no vectors, no chunking, and human-like retrieval.
+- [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using PageIndex — no vectors, no chunking, and human-like retrieval.
 - [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow that retrieves and reasons directly over PDF page images.
 </details>
 
@@ -68,7 +68,7 @@ PageIndex powers a reasoning-based RAG system that achieved [98.7% accuracy](htt
 
 ### 📍 Explore PageIndex
 
-Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out this GitHub repo for open-source code, and our [cookbooks](https://docs.pageindex.ai/cookbook) and [tutorials](https://docs.pageindex.ai/tutorials) for additional usage guides and examples. The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out this [GitHub repo](https://github.com/VectifyAI/PageIndex) for open-source code, and our [cookbooks](https://docs.pageindex.ai/cookbook) and [tutorials](https://docs.pageindex.ai/tutorials) for additional usage guides and examples. The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 
 ### ⚙️ Deployment Options
 - 🛠️ Self-host — run locally with this open-source repo.
