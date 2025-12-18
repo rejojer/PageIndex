@@ -76,8 +76,8 @@ Please see a detailed introduction of the [PageIndex framework](https://pageinde
 
 ### 🧪 Quick Hands-on
 
-- Try the [_**Vectorless RAG Notebook**_](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb) — a *minimal*, hands-on example of reasoning-based RAG using **PageIndex**.
-- Experiment with the [*Vision-based Vectorless RAG*](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb) — no OCR; a minimal, reasoning-native RAG pipeline that works directly over page images.
+- Try the [_**Vectorless RAG Notebook**_](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb) — a *minimal*, hands-on example of reasoning-based RAG using PageIndex.
+- Experiment with the [*Vision-based vectorless RAG*](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb) — no OCR; a minimal, reasoning-native RAG pipeline that works directly over page images.
   
 <div align="center">
   <a href="https://colab.research.google.com/github/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb" target="_blank" rel="noopener">
