@@ -225,7 +225,7 @@ Explore the full [benchmark results](https://github.com/VectifyAI/Mafin2.5-Finan
 
 ---
 
-### ⭐ Support Us
+# ⭐ Support Us
 
 Leave a star if you like our project. Thank you!  
 
