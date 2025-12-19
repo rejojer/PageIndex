@@ -95,7 +95,7 @@ Please see a detailed introduction of the [PageIndex framework](https://pageinde
 # 🌲 PageIndex Tree Structure
 PageIndex can transform lengthy PDF documents into a semantic **tree structure**, similar to a _"table of contents"_ but optimized for use with Large Language Models (LLMs). It's ideal for: financial reports, regulatory filings, academic textbooks, legal or technical manuals, and any document that exceeds LLM context limits.
 
-Below is an example output tree structure. More example [documents](https://github.com/VectifyAI/PageIndex/tree/main/tests/pdfs) and their generated [tree structures](https://github.com/VectifyAI/PageIndex/tree/main/tests/results) are available.
+Below is an example output tree structure. More [documents](https://github.com/VectifyAI/PageIndex/tree/main/tests/pdfs) and their generated [tree structures](https://github.com/VectifyAI/PageIndex/tree/main/tests/results) are available.
 
 ```jsonc
 ...
@@ -125,7 +125,7 @@ Below is an example output tree structure. More example [documents](https://gith
 ...
 ```
 
- You can either generate the PageIndex tree structure with this open-source repo, or try our [API](https://docs.pageindex.ai/quickstart) service.
+You can either generate the PageIndex tree structure with this open-source repo, or try our [API](https://docs.pageindex.ai/quickstart) service.
 
 ---
 
