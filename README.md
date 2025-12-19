@@ -65,7 +65,7 @@ Compared to traditional *vector-based RAG*, **PageIndex** features:
 - **Human-like Retrieval**: Simulates how human experts navigate and extract knowledge from complex documents.
 - **Better Explainability and Traceability**: Retrieval is based on reasoning — traceable and interpretable, with page and section references. No more opaque, approximate vector search (“vibe retrieval”).
 
-PageIndex powers a reasoning-based RAG system with **state-of-the-art** [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench, demonstrating superior performance over vector RAG solutions in professional document analysis (details in our [blog post](https://vectify.ai/blog/Mafin2.5)).
+PageIndex powers a reasoning-based RAG system that achieved **state-of-the-art** [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench, demonstrating superior performance over vector-based RAG solutions in professional document analysis (see our [blog post](https://vectify.ai/blog/Mafin2.5) for details).
 
 ### 📍 Explore PageIndex
 
@@ -232,7 +232,7 @@ Leave us a star 🌟 if you like our project. Thank you!
   <img src="https://github.com/user-attachments/assets/eae4ff38-48ae-4a7c-b19f-eab81201d794" width="80%">
 </p>
 
-### 💬 Connect with Us
+### Connect with Us
 
 [![Twitter](https://img.shields.io/badge/Twitter-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/VectifyAI)&nbsp;
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/vectify-ai/)&nbsp;
