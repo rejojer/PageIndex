@@ -24,7 +24,6 @@
   
 </div>
 
----
 
 <details open>
 <summary><h2>📢 Recent Updates</h2></summary>
