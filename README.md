@@ -27,6 +27,7 @@
 ---
 
 <details open>
+  
 <summary><h2>📢 Recent Updates</h2></summary>
  **🔥 New Releases:**
 - [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent platform built for professional long documents. It can also be integrated via the [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
@@ -40,6 +41,7 @@
  **🧪 Cookbooks:**
 - [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using PageIndex — no vectors, no chunking, and human-like retrieval.
 - [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow that retrieves and reasons directly over PDF page images.
+
 </details>
 
 
