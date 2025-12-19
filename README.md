@@ -38,7 +38,7 @@
 <!-- - [Do We Still Need OCR?](https://pageindex.ai/blog/do-we-need-ocr): Explores how vision-based, reasoning-native RAG challenges the traditional OCR pipeline, and why the future of document AI might be *vectorless* and *vision-based*. -->
 
  **🧪 Cookbooks:**
-- [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using PageIndex — no vectors, no chunking, and human-like retrieval.
+- [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using PageIndex. No vectors, no chunking, and human-like retrieval.
 - [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): Experience OCR-free document understanding through PageIndex’s visual retrieval workflow that retrieves and reasons directly over PDF page images.
 </details>
 
@@ -46,7 +46,7 @@
 
 # 📑 Introduction to PageIndex
 
-Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true *relevance*. But **similarity ≠ relevance** — what we truly need in retrieval is **relevance**, and that requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short.
+Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true *relevance*. But **similarity ≠ relevance**; what we truly need in retrieval is **relevance**, and that requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short.
 
 Inspired by AlphaGo, we propose **[PageIndex](https://vectify.ai/pageindex)** — a ***vectorless***, **reasoning-based RAG** system that builds a **hierarchical tree index** from long documents and uses LLMs to **reason over that index** for retrieval. It simulates how *human experts* navigate and extract knowledge from complex documents through *tree search*, enabling LLMs to *think* and *reason* their way to the most relevant document sections. PageIndex performs retrieval in two steps:
 
