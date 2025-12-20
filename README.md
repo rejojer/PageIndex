@@ -54,7 +54,9 @@ Inspired by AlphaGo, we propose **[PageIndex](https://vectify.ai/pageindex)** â€
 2. Perform reasoning-based retrieval through **tree search**
 
 <div align="center">
+  <a href="https://pageindex.ai/blog/pageindex-intro" target="_blank" title="The PageIndex Framework">
     <img src="https://docs.pageindex.ai/images/cookbook/vectorless-rag.png" width="70%">
+  </a>
 </div>
 
 ### ðŸ§© Features 
