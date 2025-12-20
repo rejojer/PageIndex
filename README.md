@@ -39,7 +39,7 @@
 
  **🧪 Cookbooks:**
 - [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using PageIndex. No vectors, no chunking, and human-like retrieval.
-- [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): Experience OCR-free document understanding with PageIndex’s visual retrieval workflow that retrieves and reasons directly over PDF page images.
+- [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): OCR-free, vision-only RAG with PageIndex’s reasoning-native retrieval workflow that works directly over PDF page images.
 </details>
 
 ---
