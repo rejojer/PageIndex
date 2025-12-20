@@ -76,7 +76,7 @@ Please see a detailed introduction of the [PageIndex framework](https://pageinde
 
 ### 🛠️ Deployment Options
 - Self-host — run locally with this open-source repo.
-- _Cloud Service_ — try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate with [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+- Cloud Service — try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate with [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 - _Enterprise_ — private or on-prem deployment. [Contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet).
 
 ### 🧪 Quick Hands-on
