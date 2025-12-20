@@ -62,7 +62,7 @@ It simulates how *human experts* navigate and extract knowledge from complex doc
 
 ### 🧩 Features 
 
-Compared to traditional *vector-based RAG*, **PageIndex** features:
+Compared to traditional vector-based RAG, **PageIndex** features:
 - **No Vector DB**: Uses document structure and LLM reasoning for retrieval, instead of vector similarity search.
 - **No Chunking**: Documents are organized into natural sections, not artificial chunks.
 - **Human-like Retrieval**: Simulates how human experts navigate and extract knowledge from complex documents.
@@ -73,6 +73,8 @@ PageIndex powers a reasoning-based RAG system that achieved **state-of-the-art**
 ### 📍 Explore PageIndex
 
 Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out this GitHub repo for open-source code, and [cookbooks](https://docs.pageindex.ai/cookbook) and [tutorials](https://docs.pageindex.ai/tutorials) for additional usage guides and examples. The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+
+For Enterprise options, [contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet) to learn more.
 
 ### ⚙️ Deployment Options
 - Self-host — run locally with this open-source repo.
