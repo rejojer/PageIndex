@@ -74,7 +74,7 @@ PageIndex powers a reasoning-based RAG system that achieved **state-of-the-art**
 
 Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out this GitHub repo for open-source code, and the [cookbooks](https://docs.pageindex.ai/cookbook), [tutorials](https://docs.pageindex.ai/tutorials), and [blog](https://pageindex.ai/blog) for additional usage guides and examples. 
 
-The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or can be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 
 ### 🛠️ Deployment Options
 - Self-host — run locally with this open-source repo.
@@ -131,7 +131,7 @@ Below is an example PageIndex tree structure. Also see more example [documents](
 ...
 ```
 
-You can either generate the PageIndex tree structure with this open-source repo, or try our [API](https://docs.pageindex.ai/quickstart) service.
+You can generate the PageIndex tree structure with this open-source repo, or use our [API](https://docs.pageindex.ai/quickstart) 
 
 ---
 
