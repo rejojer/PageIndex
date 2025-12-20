@@ -60,7 +60,7 @@ It simulates how *human experts* navigate and extract knowledge from complex doc
   </a>
 </div>
 
-### 🧩 Features 
+### 🎯 Features 
 
 Compared to traditional vector-based RAG, **PageIndex** features:
 - **No Vector DB**: Uses document structure and LLM reasoning for retrieval, instead of vector similarity search.
@@ -76,7 +76,7 @@ Please see a detailed introduction of the [PageIndex framework](https://pageinde
 
 For Enterprise options, [contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet) to learn more.
 
-### ⚙️ Deployment Options
+### 🛠️ Deployment Options
 - Self-host — run locally with this open-source repo.
 - Cloud Service — try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate with [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 - Enterprise — private or on-prem deployment. [Contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet).
@@ -135,7 +135,7 @@ You can either generate the PageIndex tree structure with this open-source repo,
 
 ---
 
-# 📦 Package Usage
+# ⚙️ Package Usage
 
 You can follow these steps to generate a PageIndex tree from a PDF document.
 
@@ -225,7 +225,7 @@ Explore the full [benchmark results](https://github.com/VectifyAI/Mafin2.5-Finan
 * 🧪 [Cookbooks](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): hands-on, runnable examples and advanced use cases.
 * 📖 [Tutorials](https://docs.pageindex.ai/doc-search): practical guides and strategies, including *Document Search* and *Tree Search*.
 * 📝 [Blog](https://pageindex.ai/blog): technical articles, research insights, and product updates.
-* ⚙️ [MCP setup](https://pageindex.ai/mcp#quick-setup) & [API docs](https://docs.pageindex.ai/quickstart): integration details and configuration options.
+* 🔌 [MCP setup](https://pageindex.ai/mcp#quick-setup) & [API docs](https://docs.pageindex.ai/quickstart): integration details and configuration options.
 
 ---
 
