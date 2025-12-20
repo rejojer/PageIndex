@@ -74,12 +74,10 @@ PageIndex powers a reasoning-based RAG system that achieved **state-of-the-art**
 
 Please see a detailed introduction of the [PageIndex framework](https://pageindex.ai/blog/pageindex-intro). Check out this GitHub repo for open-source code, and [cookbooks](https://docs.pageindex.ai/cookbook) and [tutorials](https://docs.pageindex.ai/tutorials) for additional usage guides and examples. The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or could be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 
-For Enterprise options, [contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet) to learn more.
-
 ### 🛠️ Deployment Options
 - Self-host — run locally with this open-source repo.
-- Cloud Service — try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate with [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
-- Enterprise — private or on-prem deployment. [Contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet).
+- _Cloud Service_ — try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate with [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+- _Enterprise_ — private or on-prem deployment. [Contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet).
 
 ### 🧪 Quick Hands-on
 
