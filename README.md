@@ -14,7 +14,7 @@
 <p align="center"><b>Reasoning-based RAG&nbsp; ◦ &nbsp;No Vector DB&nbsp; ◦ &nbsp;No Chunking&nbsp; ◦ &nbsp;Human-like Retrieval</b></p>
 
 <h4 align="center">
-  <a href="https://vectify.ai">🏠 Home</a>&nbsp; • &nbsp;
+  <a href="https://vectify.ai">🏠 Homepage</a>&nbsp; • &nbsp;
   <a href="https://chat.pageindex.ai">🖥️ Chat Platform</a>&nbsp; • &nbsp;
   <a href="https://pageindex.ai/mcp">🔌 MCP</a>&nbsp; • &nbsp;
   <a href="https://docs.pageindex.ai">📚 Docs</a>&nbsp; • &nbsp;
@@ -29,7 +29,7 @@
 <summary><h2>📢 Latest Updates</h2></summary>
 
  **🔥 Releases:**
-- [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent platform built for professional long documents. Can also be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
+- [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent [platform](https://chat.pageindex.ai) built for professional long documents. Can also be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
 <!-- - [**PageIndex Chat API**](https://docs.pageindex.ai/quickstart): An API that brings PageIndex's advanced long-document intelligence directly into your applications and workflows. -->
 <!-- - [PageIndex MCP](https://pageindex.ai/mcp): Bring PageIndex into Claude, Cursor, or any MCP-enabled agent. Chat with long PDFs in a reasoning-based, human-like way. -->
  
