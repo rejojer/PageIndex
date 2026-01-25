@@ -27,7 +27,7 @@
 </div>
 
 <details open>
-<!-- <summary><h3>📢 Latest Updates</h3></summary> -->
+<summary><h3>📢 Latest Updates</h3></summary>
 
  **🔥 Releases:**
 - [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent [platform](https://chat.pageindex.ai) built for professional long documents. Can also be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
