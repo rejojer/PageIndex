@@ -1,6 +1,6 @@
-# PageIndex: Vectorless, Reasoning-based RAG
-
 <div align="center">
+
+# PageIndex: Vectorless, Reasoning-based RAG
   
 <a href="https://vectify.ai/pageindex" target="_blank">
   <img src="https://github.com/user-attachments/assets/46201e72-675b-43bc-bfbd-081cc6b65a1d" alt="PageIndex Banner" />
