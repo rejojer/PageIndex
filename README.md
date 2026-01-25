@@ -1,4 +1,4 @@
-# PageIndex — Vectorless, Reasoning-based RAG
+# PageIndex: Vectorless, Reasoning-based RAG
 
 <div align="center">
   
