@@ -4,7 +4,7 @@
   <img src="https://github.com/user-attachments/assets/46201e72-675b-43bc-bfbd-081cc6b65a1d" alt="PageIndex Banner" />
 </a>
 
-# PageIndex: Vectorless, Reasoning-based RAG
+
 
 <br/>
 <br/>
@@ -12,6 +12,8 @@
 <p align="center">
   <a href="https://trendshift.io/repositories/14736" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14736" alt="VectifyAI%2FPageIndex | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 </p>
+
+# PageIndex: Vectorless, Reasoning-based RAG
 
 <p align="center"><b>Reasoning-based RAG&nbsp; ◦ &nbsp;No Vector DB&nbsp; ◦ &nbsp;No Chunking&nbsp; ◦ &nbsp;Human-like Retrieval</b></p>
 
