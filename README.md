@@ -166,7 +166,7 @@ python3 run_pageindex.py --pdf_path /path/to/your/document.pdf
 ```
 
 <details>
-<summary><strong>Optional parameters</strong></summary>
+<summary>Optional parameters</summary>
 <br>
 You can customize the processing with additional optional arguments:
 
@@ -182,7 +182,7 @@ You can customize the processing with additional optional arguments:
 </details>
 
 <details>
-<summary><strong>Markdown support</strong></summary>
+<summary>Markdown support</summary>
 <br>
 We also provide markdown support for PageIndex. You can use the `--md_path` flag to generate a tree structure for a markdown file.
 
