@@ -86,6 +86,10 @@ The PageIndex service is available as a ChatGPT-style [chat platform](https://ch
 - Check out [Vision-based Vectorless RAG](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb) — no OCR; a minimal, vision-based & reasoning-native RAG pipeline that works directly over page images.
   
 <div align="center">
+  <a href="https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/badge/View_on_GitHub-Agentic_RAG-blue?style=for-the-badge&logo=github" alt="View on GitHub: Agentic RAG" />
+  </a>
+  &nbsp;&nbsp;
   <a href="https://colab.research.google.com/github/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb" target="_blank" rel="noopener">
     <img src="https://img.shields.io/badge/Open_In_Colab-Vectorless_RAG-orange?style=for-the-badge&logo=googlecolab" alt="Open in Colab: Vectorless RAG" />
   </a>
