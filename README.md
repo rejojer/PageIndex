@@ -30,14 +30,15 @@
 <details open>
 <summary><h3>🔥 Updates</h3></summary>
 
-- [**Agentic RAG Example**](examples/openai_agents_demo.py): A complete agentic vectorless RAG example powered by self-hosted PageIndex, using OpenAI Agents SDK.
+- [**Agentic Vectorless RAG Example**](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py): A complete **agentic vectorless RAG** [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) powered by self-hosted PageIndex, using OpenAI Agents SDK.
 - [**PageIndex Chat**](https://chat.pageindex.ai): The first human-like document-analysis agent [platform](https://chat.pageindex.ai) built for professional long documents. Can also be integrated via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart) (beta).
 - [**PageIndex Framework**](https://pageindex.ai/blog/pageindex-intro): Introduces the PageIndex framework — an *agentic, in-context* *tree index* that enables LLMs to perform *reasoning-based*, *human-like retrieval* over long documents, without vector DB or chunking.
-<!-- 
- **🧪 Cookbooks:**
+
+ <!-- **🧪 Cookbooks:**
 - [Vectorless RAG](https://docs.pageindex.ai/cookbook/vectorless-rag-pageindex): A minimal, hands-on example of reasoning-based RAG using PageIndex. No vectors, no chunking, and human-like retrieval.
-- [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): OCR-free, vision-only RAG with PageIndex's reasoning-native retrieval workflow that works directly over PDF page images.
-</details> -->
+- [Vision-based Vectorless RAG](https://docs.pageindex.ai/cookbook/vision-rag-pageindex): OCR-free, vision-only RAG with PageIndex's reasoning-native retrieval workflow that works directly over PDF page images. -->
+
+</details>
 
 ---
 
@@ -190,7 +191,7 @@ python3 run_pageindex.py --md_path /path/to/your/document.md
 
 ### A Complete Agentic RAG Example
 
-For a complete example on **agentic RAG with PageIndex** (using [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)), see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py).
+For a complete example on building **document QA agents** with **agentic vectorless RAG** with PageIndex (using [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)), see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py).
 
 ```bash
 # Install optional dependency
