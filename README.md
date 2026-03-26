@@ -254,7 +254,7 @@ PageIndex Blog, Sep 2025.
 ```
 
 <details>
-<summary>Or use the BibTeX citation</summary>
+<summary>Or use the BibTeX citation.</summary>
 
 ```bibtex
 @article{zhang2025pageindex,
