@@ -193,9 +193,9 @@ python3 run_pageindex.py --md_path /path/to/your/document.md
 > Note: in this function, we use "#" to determine node heading and their levels. For example, "##" is level 2, "###" is level 3, etc. Make sure your markdown file is formatted correctly. If your Markdown file was converted from a PDF or HTML, we don't recommend using this function, since most existing conversion tools cannot preserve the original hierarchy. Instead, use our [PageIndex OCR](https://pageindex.ai/blog/ocr), which is designed to preserve the original hierarchy, to convert the PDF to a markdown file and then use this function.
 </details>
 
-### A Complete Agentic RAG Example
+### Agentic Vectorless RAG Example
 
-For a complete example on **agentic vectorless RAG** using PageIndex (with [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)), see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py).
+For a complete **agentic vectorless RAG** example using PageIndex (with [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)), see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py).
 
 ```bash
 # Install optional dependency
