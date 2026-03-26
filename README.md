@@ -155,8 +155,7 @@ Create a `.env` file in the root directory with your LLM API key, with multi-LLM
 
 ```bash
 OPENAI_API_KEY=your_openai_key_here
-# or
-CHATGPT_API_KEY=your_openai_key_here  # legacy, still supported
+# or CHATGPT_API_KEY=your_openai_key_here (legacy, still supported)
 ```
 
 ### 3. Generate PageIndex structure for your PDF
@@ -190,7 +189,7 @@ We also provide markdown support for PageIndex. You can use the `--md_path` flag
 python3 run_pageindex.py --md_path /path/to/your/document.md
 ```
 
-> Note: in this function, we use "#" to determine node heading and their levels. For example, "##" is level 2, "###" is level 3, etc. Make sure your markdown file is formatted correctly. If your Markdown file was converted from a PDF or HTML, we don't recommend using this function, since most existing conversion tools cannot preserve the original hierarchy. Instead, use our [PageIndex OCR](https://pageindex.ai/blog/ocr), which is designed to preserve the original hierarchy, to convert the PDF to a markdown file and then use this function.
+> Note: in this mode, we use "#" to determine node headings and their levels. For example, "##" is level 2, "###" is level 3, etc. Make sure your markdown file is formatted correctly. If your Markdown file was converted from a PDF or HTML, we don't recommend using this mode, since most existing conversion tools cannot preserve the original hierarchy. Instead, use our [PageIndex OCR](https://pageindex.ai/blog/ocr), which is designed to preserve the original hierarchy, to convert the PDF to a markdown file and then use this mode.
 </details>
 
 ### Agentic Vectorless RAG Example
