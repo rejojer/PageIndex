@@ -28,7 +28,7 @@
 
 
 <details open>
-<summary><h2>📌 Latest Updates</h2></summary>
+<summary><h2>📌 Updates</h2></summary>
 
 - 🔥 [**An Agentic Vectorless RAG Example**](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py): A complete *agentic, vectorless RAG* [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) with self-hosted PageIndex, using OpenAI Agents SDK.
 - [PageIndex Chat](https://chat.pageindex.ai): Human-like document-analysis agent [platform](https://chat.pageindex.ai) for professional long documents. Also available via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
