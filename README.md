@@ -155,7 +155,6 @@ Create a `.env` file in the root directory with your LLM API key, with multi-LLM
 
 ```bash
 OPENAI_API_KEY=your_openai_key_here
-# or CHATGPT_API_KEY=your_openai_key_here (legacy, still supported)
 ```
 
 ### 3. Generate PageIndex structure for your PDF
