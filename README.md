@@ -31,7 +31,7 @@
 <summary><h2>📢 Updates</h2></summary>
 
 - 🔥 [**An Agentic Vectorless RAG Example**](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py): A complete *agentic, vectorless RAG* [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) with self-hosted PageIndex, using OpenAI Agents SDK.
-- [PageIndex Chat](https://chat.pageindex.ai): Human-like document analysis [platform](https://chat.pageindex.ai) for professional long documents. Also available via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
+- [PageIndex Chat](https://chat.pageindex.ai): Human-like document analysis [platform](https://chat.pageindex.ai) for professional long documents (also via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart)).
 - [PageIndex Framework](https://pageindex.ai/blog/pageindex-intro): The PageIndex framework — an *agentic, in-context tree index* that enables LLMs to perform *reasoning-based, human-like retrieval* over long documents.
 
  <!-- **🧪 Cookbooks:**
