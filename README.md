@@ -30,7 +30,7 @@
 <details open>
 <summary><h2>📢 Updates</h2></summary>
 
-- 🔥 [**Agentic Vectorless RAG Example**](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py): A complete *agentic, vectorless RAG* [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) with self-hosted PageIndex, using OpenAI Agents SDK.
+- 🔥 [**Agentic Vectorless RAG**](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py): A simple *agentic, vectorless RAG* [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) with self-hosted PageIndex, using OpenAI Agents SDK.
 - [PageIndex Chat](https://chat.pageindex.ai): A Human-like document analysis agent [platform](https://chat.pageindex.ai) for professional long documents. Also available via [MCP](https://pageindex.ai/mcp) or [API](https://docs.pageindex.ai/quickstart).
 - [PageIndex Framework](https://pageindex.ai/blog/pageindex-intro): The PageIndex framework — an *agentic, in-context tree index* that enables LLMs to perform *reasoning-based, human-like retrieval* over long documents.
 
@@ -81,7 +81,7 @@ The PageIndex service is available as a ChatGPT-style [chat platform](https://ch
 
 ### 🧪 Quick Hands-on
 
-- 🔥 [**Agentic Vectorless RAG**](examples/openai_agents_demo.py) (**latest**) — a complete **agentic vectorless RAG** [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) with *self-hosted* PageIndex, using OpenAI Agents SDK.
+- 🔥 [**Agentic Vectorless RAG**](examples/openai_agents_demo.py) (**latest**) — a simple but complete **agentic vectorless RAG** [example](https://github.com/VectifyAI/PageIndex/blob/main/examples/openai_agents_demo.py) with *self-hosted* PageIndex, using OpenAI Agents SDK.
 - Try the [Vectorless RAG](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/pageindex_RAG_simple.ipynb) notebook — a *minimal*, hands-on example of reasoning-based RAG using PageIndex.
 - Check out [Vision-based Vectorless RAG](https://github.com/VectifyAI/PageIndex/blob/main/cookbook/vision_RAG_pageindex.ipynb) — no OCR; a minimal, vision-based & reasoning-native RAG pipeline that works directly over page images.
   
@@ -105,7 +105,7 @@ The PageIndex service is available as a ChatGPT-style [chat platform](https://ch
 
 PageIndex can transform lengthy PDF documents into a semantic **tree structure**, similar to a _"table of contents"_ but optimized for use with Large Language Models (LLMs). It's ideal for: financial reports, regulatory filings, academic textbooks, legal or technical manuals, and any document that exceeds LLM context limits.
 
-Below is an example PageIndex tree structure. Also see more example [documents](https://github.com/VectifyAI/PageIndex/tree/main/tests/pdfs) and generated [tree structures](https://github.com/VectifyAI/PageIndex/tree/main/tests/results).
+Below is an example PageIndex tree structure. Also see more example [documents](https://github.com/VectifyAI/PageIndex/tree/main/examples/documents) and generated [tree structures](https://github.com/VectifyAI/PageIndex/tree/main/examples/documents/results).
 
 ```jsonc
 ...
@@ -193,7 +193,7 @@ python3 run_pageindex.py --md_path /path/to/your/document.md
 
 ### Agentic Vectorless RAG Example
 
-For a complete **agentic vectorless RAG** example with PageIndex, see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py) (using [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)).
+For a simple yet complete **agentic vectorless RAG** example with PageIndex, see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py) (using [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)).
 
 ```bash
 # Install optional dependency
