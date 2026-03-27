@@ -193,7 +193,7 @@ python3 run_pageindex.py --md_path /path/to/your/document.md
 
 ### Agentic Vectorless RAG Example
 
-For a simple, end-to-end **agentic vectorless RAG** example using PageIndex (with OpenAI Agents SDK), see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py).
+For a simple, end-to-end _**agentic vectorless RAG**_ example using PageIndex (with OpenAI Agents SDK), see [`examples/openai_agents_demo.py`](examples/openai_agents_demo.py).
 
 ```bash
 # Install optional dependency
