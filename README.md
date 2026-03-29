@@ -16,10 +16,10 @@
 <p align="center"><b>Reasoning-based RAG&nbsp; ◦ &nbsp;No Vector DB&nbsp; ◦ &nbsp;No Chunking&nbsp; ◦ &nbsp;Human-like Retrieval</b></p>
 
 <h4 align="center">
-  <a href="https://vectify.ai">🏠 Homepage</a>&nbsp; • &nbsp;
+  <a href="https://vectify.ai">🌐 Homepage</a>&nbsp; • &nbsp;
   <a href="https://chat.pageindex.ai">🖥️ Chat Platform</a>&nbsp; • &nbsp;
-  <a href="https://pageindex.ai/developer">🔌 MCP & API</a>&nbsp; • &nbsp;
-  <a href="https://docs.pageindex.ai">📚 Docs</a>&nbsp; • &nbsp;
+  <a href="https://pageindex.ai/developer">🔌 MCP / API</a>&nbsp; • &nbsp;
+  <a href="https://docs.pageindex.ai">📖 Docs</a>&nbsp; • &nbsp;
   <a href="https://discord.com/invite/VuXuf29EUj">💬 Discord</a>&nbsp; • &nbsp;
   <a href="https://ii2abc2jejf.typeform.com/to/tK3AXl8T">✉️ Contact</a>&nbsp;
 </h4>
