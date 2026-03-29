@@ -246,6 +246,13 @@ Explore the full [benchmark results](https://github.com/VectifyAI/Mafin2.5-Finan
 ---
 
 # ⭐ Support Us
+
+Leave us a star 🌟 if you like our project. Thank you!  
+
+<p>
+  <img src="https://github.com/user-attachments/assets/eae4ff38-48ae-4a7c-b19f-eab81201d794" width="80%">
+</p>
+
 Please cite this work as:
 ```
 Mingtian Zhang, Yu Tang and PageIndex Team,
@@ -268,11 +275,6 @@ PageIndex Blog, Sep 2025.
 ```
 </details>
 
-Leave us a star 🌟 if you like our project. Thank you!  
-
-<p>
-  <img src="https://github.com/user-attachments/assets/eae4ff38-48ae-4a7c-b19f-eab81201d794" width="80%">
-</p>
 
 ### Connect with Us
 
