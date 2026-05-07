@@ -13,7 +13,7 @@
 
 # PageIndex: Vectorless, Reasoning-based RAG
 
-<p align="center"><b>Reasoning-based RAG&nbsp; ◦ &nbsp;No Vector DB&nbsp; ◦ &nbsp;No Chunking&nbsp; ◦ &nbsp;Context-Aware&nbsp; ◦ &nbsp;Human-like Retrieval</b></p>
+<p align="center"><b>Reasoning-based RAG&nbsp; ◦ &nbsp;No Vector DB or Chunking&nbsp; ◦ &nbsp;Context-Aware&nbsp; ◦ &nbsp;Human-like Retrieval</b></p>
 
 <h4 align="center">
   <a href="https://vectify.ai">🌐 Homepage</a>&nbsp; • &nbsp;
