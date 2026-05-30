@@ -281,7 +281,7 @@ PageIndex Blog, Sep 2025.
 
 ### 🌐 Ecosystem
 
-Other open-source projects from the PageIndex ecosystem: [OpenKB](https://github.com/VectifyAI/OpenKB), an open LLM knowledge base that compiles documents into an interlinked wiki; [ChatIndex](https://github.com/VectifyAI/ChatIndex), tree indexing and retrieval for long conversations; [ConDB](https://github.com/VectifyAI/ConDB), a KV-cache-native context database for reasoning-based retrieval via tree search; [PageIndex MCP](https://github.com/VectifyAI/pageindex-mcp), the MCP server for PageIndex.
+Other open-source projects from the PageIndex ecosystem: [OpenKB](https://github.com/VectifyAI/OpenKB) is an open LLM knowledge base that compiles documents into an interlinked wiki; [ChatIndex](https://github.com/VectifyAI/ChatIndex) brings tree indexing and retrieval to long conversational histories; [ConDB](https://github.com/VectifyAI/ConDB) is a KV-cache native context database for tree-based retrieval; [Pageindex MCP](https://github.com/VectifyAI/pageindex-mcp) is the MCP server for PageIndex.
 
 ### Connect with Us
 
