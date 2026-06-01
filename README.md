@@ -16,7 +16,7 @@
 <p align="center"><b>Reasoning-based RAG&nbsp; ◦ &nbsp;No Vector DB or Chunking&nbsp; ◦ &nbsp;Context-Aware&nbsp; ◦ &nbsp;Human-like Retrieval</b></p>
 
 <h4 align="center">
-  <a href="https://vectify.ai">🌐 Homepage</a>&nbsp; • &nbsp;
+  <a href="https://vectify.ai">🌐 Website</a>&nbsp; • &nbsp;
   <a href="https://chat.pageindex.ai">🖥️ Chat Platform</a>&nbsp; • &nbsp;
   <a href="https://pageindex.ai/developer">🔌 MCP & API</a>&nbsp; • &nbsp;
   <a href="https://docs.pageindex.ai">📖 Docs</a>&nbsp; • &nbsp;
@@ -279,18 +279,21 @@ PageIndex Blog, Sep 2025.
 ```
 </details>
 
+
 ### 🌐 Ecosystem
 
-Other open-source projects from the PageIndex ecosystem: [OpenKB](https://github.com/VectifyAI/OpenKB) is an LLM knowledge base that compiles documents into an interlinked wiki; [ChatIndex](https://github.com/VectifyAI/ChatIndex) brings tree indexing and retrieval to long conversational histories; [ConDB](https://github.com/VectifyAI/ConDB) is a KV-cache native context database for tree-based retrieval; [PageIndex MCP](https://github.com/VectifyAI/pageindex-mcp) is PageIndex's MCP server.
+Other open-source projects from the PageIndex ecosystem: [OpenKB](https://github.com/VectifyAI/OpenKB) is an LLM knowledge base that compiles documents into an interlinked wiki. [ChatIndex](https://github.com/VectifyAI/ChatIndex) brings tree indexing and retrieval to long conversational histories. [ConDB](https://github.com/VectifyAI/ConDB) is a KV-cache native context database for tree-based retrieval. [PageIndex MCP](https://github.com/VectifyAI/pageindex-mcp) is PageIndex's MCP server.
 
 ### Connect with Us
 
 <div align="center">
 
+[![Website](https://img.shields.io/badge/Website-6366F1?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pageindex.ai)&ensp;
 [![Twitter](https://img.shields.io/badge/Twitter-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/PageIndexAI)&ensp;
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/vectify-ai/)&ensp;
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/VuXuf29EUj)&ensp;
-[![Contact Us](https://img.shields.io/badge/Contact_Us-3B82F6?style=for-the-badge&logo=envelope&logoColor=white)](https://ii2abc2jejf.typeform.com/to/tK3AXl8T)
+[![Contact Us](https://img.shields.io/badge/Contact_Us-3B82F6?style=for-the-badge&logo=envelope&logoColor=white)](https://ii2abc2jejf.typeform.com/to/tK3AXl8T)&ensp;
+[![Book a Demo](https://img.shields.io/badge/Book_a_Demo-10B981?style=for-the-badge&logo=googlecalendar&logoColor=white)](https://calendly.com/pageindex/meet)
 
 </div>
 
