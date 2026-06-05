@@ -78,8 +78,8 @@ The PageIndex service is available as a ChatGPT-style [chat platform](https://ch
 
 ### 🛠️ Deployment Options
 - **Self-host** — run locally with this open-source repo (using standard PDF parsing).
-- **Cloud Service** — production-grade pipeline with enhanced OCR, tree building, and retrieval for best results. Try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer).
-- **Enterprise** — dedicated or private deployment (VPC, on-prem). [Contact us](https://ii2abc2jejf.typeform.com/to/gVv7qkaN) or [book a demo](https://calendly.com/pageindex/meet) for more details.
+- **Cloud Service** — production-grade pipeline with enhanced OCR, tree building, and retrieval for best results. Try instantly on our [Chat Platform](https://chat.pageindex.ai/), or integrate via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer).
+- **Enterprise** — dedicated or private deployment (VPC, on-prem). [Contact us](https://ii2abc2jejf.typeform.com/to/gVv7qkaN) or [book a demo](https://calendly.com/pageindex/meet) to learn more.
 
 ### 🧪 Quick Hands-on
 
@@ -282,7 +282,7 @@ PageIndex Blog, Sep 2025.
 
 ### 🌐 Ecosystem
 
-Other open-source projects from the PageIndex ecosystem: [OpenKB](https://github.com/VectifyAI/OpenKB) is an LLM knowledge base that compiles documents into an interlinked wiki. [ChatIndex](https://github.com/VectifyAI/ChatIndex) brings tree indexing and retrieval to long conversational histories. [ConDB](https://github.com/VectifyAI/ConDB) is a KV-cache native context database for tree-based retrieval. [PageIndex MCP](https://github.com/VectifyAI/pageindex-mcp) is PageIndex's MCP server.
+Other [open-source projects](https://docs.pageindex.ai/open-source) from the PageIndex ecosystem: [OpenKB](https://github.com/VectifyAI/OpenKB) is an LLM knowledge base that compiles documents into an interlinked wiki. [ChatIndex](https://github.com/VectifyAI/ChatIndex) brings tree indexing and retrieval to long conversational histories. [ConDB](https://github.com/VectifyAI/ConDB) is a KV-cache native context database for tree-based retrieval. [PageIndex MCP](https://github.com/VectifyAI/pageindex-mcp) is PageIndex's MCP server.
 
 ### Connect with Us
 
