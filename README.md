@@ -47,7 +47,7 @@
 
 Are you frustrated with vector database retrieval accuracy for long professional documents? Traditional vector-based RAG relies on semantic *similarity* rather than true *relevance*. But **similarity ≠ relevance** — what we truly need in retrieval is **relevance**, and that requires **reasoning**. When working with professional documents that demand domain expertise and multi-step reasoning, similarity search often falls short — missing what's relevant but not similar, and returning what's similar yet not relevant.
 
-Inspired by AlphaGo, we propose **[PageIndex](https://vectify.ai/pageindex)**, a **vectorless**, **reasoning-based RAG** system that builds a **hierarchical tree index** from long documents and uses LLMs to **reason** *over that index* for **agentic, context-aware retrieval**. The retrieval is traceable and explainable, with no vector DBs or chunking.
+Inspired by AlphaGo, we propose **[PageIndex](https://vectify.ai/pageindex)** — a **vectorless**, **reasoning-based RAG** system that builds a **hierarchical tree index** from long documents and uses LLMs to **reason** *over that index* for **agentic, context-aware retrieval**. The retrieval is traceable and explainable, with no vector DBs or chunking.
 PageIndex simulates how *human experts* navigate and extract knowledge from complex documents through *tree search*, enabling LLMs to *think* and *reason* their way to the most relevant document sections. It performs retrieval in two steps:
 
 1. Generate a “Table-of-Contents” **tree structure index** of documents
@@ -77,9 +77,9 @@ To learn more, please see a detailed introduction to the [PageIndex framework](h
 The PageIndex service is available as a ChatGPT-style [chat platform](https://chat.pageindex.ai), or can be integrated via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer).
 
 ### 🛠️ Deployment Options
-- Self-host — run locally with this open-source repo (using standard PDF parsing).
-- Cloud Service — production-grade pipeline with enhanced OCR, tree building, and retrieval for best results. Try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer).
-- _Enterprise_ — private or on-prem deployment. [Contact us](https://ii2abc2jejf.typeform.com/to/tK3AXl8T) or [book a demo](https://calendly.com/pageindex/meet) for more details.
+- **Self-host** — run locally with this open-source repo (using standard PDF parsing).
+- **Cloud Service** — production-grade pipeline with enhanced OCR, tree building, and retrieval for best results. Try instantly with our [Chat Platform](https://chat.pageindex.ai/), or integrate via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer).
+- **Enterprise** — dedicated or private deployment (VPC, on-prem). [Contact us](https://ii2abc2jejf.typeform.com/to/gVv7qkaN) or [book a demo](https://calendly.com/pageindex/meet) for more details.
 
 ### 🧪 Quick Hands-on
 
