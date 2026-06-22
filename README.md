@@ -51,7 +51,7 @@ Inspired by AlphaGo, we propose **[PageIndex](https://vectify.ai/pageindex)** �
 PageIndex simulates how *human experts* navigate and extract knowledge from complex documents through *tree search*, enabling LLMs to *think* and *reason* their way to the most relevant document sections. It performs retrieval in two steps:
 
 1. Generate a “Table-of-Contents” **tree structure index** of documents
-2. Perform reasoning-based retrieval through **tree search**
+2. Perform (agentic) reasoning-based retrieval through **tree search**
 
 <div align="center">
   <a href="https://pageindex.ai/blog/pageindex-intro" target="_blank" title="The PageIndex Framework">
