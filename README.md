@@ -139,7 +139,7 @@ Below is an example PageIndex tree structure. Also see more example [documents](
 ...
 ```
 
-You can generate the PageIndex tree structure with this open-source repo; or use our [API](https://pageindex.ai/developer) for higher-quality results powered by our enhanced OCR and tree building pipeline.
+You can generate PageIndex tree structures with this open-source repo. Or use our [API](https://pageindex.ai/developer) for higher-quality results powered by our enhanced OCR and tree building pipeline.
 
 ---
 
