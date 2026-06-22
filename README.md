@@ -66,7 +66,7 @@ Compared to traditional vector-based RAG, **PageIndex** features:
 - **No Chunking**: Documents are organized into natural sections, not artificial chunks.
 - **Better Traceability & Explainability**: Retrieval is reasoning-driven and grounded in explicit page and section references, making every result traceable and interpretable — no more “vibe retrieval” with opaque, approximate vector search.
 - **Context-Aware Retrieval**: Retrieval depends on your full context (e.g., conversation history and domain knowledge), and easily incorporates new context.
-- **Human-like Retrieval**: Simulates how human experts navigate and extract knowledge from complex documents.
+- **Human-like Retrieval**: Simulates how human experts navigate and extract knowledge from long, complex documents.
 
 PageIndex powers a reasoning-based RAG system that achieved **state-of-the-art** [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench, vastly outperforming vector-based RAG solutions on professional document analysis ([blog post](https://vectify.ai/blog/Mafin2.5)).
 
