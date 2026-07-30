@@ -10,6 +10,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process PDF or Markdown document and generate structure')
     parser.add_argument('--pdf_path', type=str, help='Path to the PDF file')
     parser.add_argument('--md_path', type=str, help='Path to the Markdown file')
+    parser.add_argument('--flash', action='store_true', help='Use PageIndex Flash (with --pdf_path)')
 
     parser.add_argument('--model', type=str, default=None, help='Model to use (overrides config.yaml)')
 
@@ -43,7 +44,7 @@ if __name__ == "__main__":
         raise ValueError("Either --pdf_path or --md_path must be specified")
     if args.pdf_path and args.md_path:
         raise ValueError("Only one of --pdf_path or --md_path can be specified")
-    
+
     if args.pdf_path:
         # Validate PDF file
         if not args.pdf_path.lower().endswith('.pdf'):
@@ -51,32 +52,36 @@ if __name__ == "__main__":
         if not os.path.isfile(args.pdf_path):
             raise ValueError(f"PDF file not found: {args.pdf_path}")
             
-        # Process PDF file
-        user_opt = {
-            'model': args.model,
-            'toc_check_page_num': args.toc_check_pages,
-            'max_page_num_each_node': args.max_pages_per_node,
-            'max_token_num_each_node': args.max_tokens_per_node,
-            'if_add_node_id': args.if_add_node_id,
-            'if_add_node_summary': args.if_add_node_summary,
-            'if_add_doc_description': args.if_add_doc_description,
-            'if_add_node_text': args.if_add_node_text,
-        }
-        opt = ConfigLoader().load({k: v for k, v in user_opt.items() if v is not None})
+        if args.flash:
+            from pageindex.flash import page_index_flash
+            toc_with_page_number = page_index_flash(args.pdf_path)
+        else:
+            # Process PDF file
+            user_opt = {
+                'model': args.model,
+                'toc_check_page_num': args.toc_check_pages,
+                'max_page_num_each_node': args.max_pages_per_node,
+                'max_token_num_each_node': args.max_tokens_per_node,
+                'if_add_node_id': args.if_add_node_id,
+                'if_add_node_summary': args.if_add_node_summary,
+                'if_add_doc_description': args.if_add_doc_description,
+                'if_add_node_text': args.if_add_node_text,
+            }
+            opt = ConfigLoader().load({k: v for k, v in user_opt.items() if v is not None})
+            toc_with_page_number = page_index_main(args.pdf_path, opt)
 
-        # Process the PDF
-        toc_with_page_number = page_index_main(args.pdf_path, opt)
         print('Parsing done, saving to file...')
-        
+
         # Save results
-        pdf_name = os.path.splitext(os.path.basename(args.pdf_path))[0]    
+        pdf_name = os.path.splitext(os.path.basename(args.pdf_path))[0]
+        suffix = '_structure_flash' if args.flash else '_structure'
         output_dir = './results'
-        output_file = f'{output_dir}/{pdf_name}_structure.json'
+        output_file = f'{output_dir}/{pdf_name}{suffix}.json'
         os.makedirs(output_dir, exist_ok=True)
-        
+
         with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(toc_with_page_number, f, indent=2)
-        
+            json.dump(toc_with_page_number, f, indent=2, ensure_ascii=False)
+
         print(f'Tree structure saved to: {output_file}')
             
     elif args.md_path:
