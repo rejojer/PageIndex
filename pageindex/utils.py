@@ -658,6 +658,39 @@ def format_structure(structure, order=None):
     return structure
 
 
+def page_level_thinning(structure, thinning_threshold_node_num=20, min_pages_for_large_tree=3):
+    def count_nodes(nodes):
+        total = 0
+        for node in nodes:
+            total += 1
+            if node.get('nodes'):
+                total += count_nodes(node['nodes'])
+        return total
+
+    def get_subtree_end(node):
+        while node.get('nodes'):
+            node = node['nodes'][-1]
+        return node.get('end_index', 0)
+
+    def thin(nodes, total_nodes):
+        for node in nodes:
+            children = node.get('nodes')
+            if not children:
+                continue
+            end_index = get_subtree_end(node)
+            page_count = end_index - node.get('start_index', 0) + 1
+            if page_count == 1 or (total_nodes > thinning_threshold_node_num and page_count < min_pages_for_large_tree):
+                node['end_index'] = end_index
+                node.pop('nodes', None)
+            else:
+                thin(children, total_nodes)
+
+    nodes = structure if isinstance(structure, list) else [structure]
+    total = count_nodes(nodes)
+    thin(nodes, total)
+    return structure
+
+
 class ConfigLoader:
     def __init__(self, default_path: str = None):
         if default_path is None:
