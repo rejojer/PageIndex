@@ -204,6 +204,8 @@ python3 run_pageindex.py --md_path /path/to/your/document.md
 > ```bash
 > python3 run_pageindex.py --flash --pdf_path /path/to/your/document.pdf
 > ```
+>
+> Add `--optimize` to refine the tree structure for more efficient retrieval (`--optimize merge` skips the LLM expansion pass).
 
 ## 🚀 Agentic Vectorless RAG: An Example
 

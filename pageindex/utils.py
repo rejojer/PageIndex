@@ -634,9 +634,127 @@ async def generate_summaries_for_structure(structure, model=None):
     nodes = structure_to_list(structure)
     tasks = [generate_node_summary(node, model=model) for node in nodes]
     summaries = await asyncio.gather(*tasks)
-    
+
     for node, summary in zip(nodes, summaries):
         node['summary'] = summary
+    return structure
+
+
+SUMMARY_CONCURRENCY = 64        # simultaneous summary model calls
+SUMMARY_RAW_TEXT_TOKENS = 200   # leaves under this reuse their raw text as the summary
+SUMMARY_INTRO_MAX_PAGES = 3     # cap on leading pages fed into a parent summary
+
+
+def get_intro_text(node, pdf_pages, max_pages=SUMMARY_INTRO_MAX_PAGES):
+    """Pages of the node covered by no child: from its start to just before the
+    first child starts. Empty when the first child opens on the node's own page."""
+    children = node.get('nodes') or []
+    first = children[0].get('start_index') if children else None
+    if not isinstance(first, int) or first <= node['start_index']:
+        return ""
+    end = min(first - 1, node['start_index'] + max_pages - 1)
+    return get_text_of_pdf_pages(pdf_pages, node['start_index'], end)
+
+
+def parse_summary(reply):
+    """The `summary` field of a model reply, or the reply itself when there is no
+    such field. Not extract_json: that rewrites `None` to `null` and collapses
+    whitespace in replies that parse as written."""
+    if not isinstance(reply, str) or not reply.strip():
+        return ""
+    text = reply.strip()
+    if '```' in text:
+        text = re.sub(r'^.*?```(?:json)?\s*', '', text, flags=re.S).split('```')[0]
+    start, end = text.find('{'), text.rfind('}')
+    if start != -1 and end > start:
+        obj = text[start:end + 1]
+        collapsed = ' '.join(obj.split())
+        parsed = None
+        # repairs, tried only once the reply fails to parse as written
+        for candidate in (obj, collapsed, collapsed.replace(',]', ']').replace(',}', '}')):
+            try:
+                parsed = json.loads(candidate)
+                break
+            except json.JSONDecodeError:
+                continue
+        if isinstance(parsed, dict) and 'summary' in parsed:
+            summary = parsed['summary']
+            if isinstance(summary, list):
+                summary = ' '.join(str(item).strip() for item in summary if str(item).strip())
+            return str(summary).strip() if summary else ""
+    return reply.strip()
+
+
+async def summarize_tree(structure, pdf_pages, model=None,
+                         small_node_tokens=SUMMARY_RAW_TEXT_TOKENS,
+                         max_intro_pages=SUMMARY_INTRO_MAX_PAGES, concurrency=None):
+    """Bottom-up summaries: leaves from their own pages, parents composed from
+    child summaries plus the pages no child covers. A parent's summary describes
+    its whole subtree (end_index union semantics). Nodes that already carry a
+    summary are left untouched; leaves under `small_node_tokens` use their raw
+    text as the summary without a model call."""
+    semaphore = asyncio.Semaphore(concurrency or SUMMARY_CONCURRENCY)
+
+    async def ask(prompt):
+        async with semaphore:
+            response = await llm_acompletion(model, prompt)
+        return parse_summary(response)
+
+    async def leaf_summary(node):
+        text = get_text_of_pdf_pages(pdf_pages, node['start_index'], node['end_index'])
+        if count_tokens(text, model="gpt-4o") < small_node_tokens:
+            return text.strip()
+        prompt = f"""You are given a text chunk from a document.
+    Your task is to generate a concise description of everything that is covered in the text, summarizing all its points without omitting any type of content.
+    Keep the description concise and to the point, avoiding unnecessary details.
+
+    Given Text: {text}
+
+    Reply strictly in the following JSON format:
+    {{
+        "points": <a list of points covered in the text>,
+        "summary": <a concise description of everything that is covered in the text, summarizing all its points without omitting any type of content>
+    }}
+
+    Follow strictly the above JSON return format. Do not include any other text!
+    """
+        return await ask(prompt)
+
+    async def parent_summary(node):
+        children = node['nodes']
+        intro = get_intro_text(node, pdf_pages, max_pages=max_intro_pages)
+        listing = json.dumps(
+            [{'title': c.get('title', ''), 'summary': c.get('summary', '')} for c in children],
+            ensure_ascii=False)
+        prompt = f"""You are given a section of a document: the text that opens the section (possibly empty) and the titles and summaries of its subsections.
+    Your task is to generate a concise description of everything that is covered in the whole section, summarizing all its points without omitting any type of content.
+    Keep the description concise and to the point, avoiding unnecessary details.
+
+    Section Title: {node.get('title', '')}
+
+    Opening Text: {intro}
+
+    Subsection Titles and Summaries: {listing}
+
+    Reply strictly in the following JSON format:
+    {{
+        "points": <a list of points covered in the section>,
+        "summary": <a concise description of everything that is covered in the section, summarizing all its points without omitting any type of content>
+    }}
+
+    Follow strictly the above JSON return format. Do not include any other text!
+    """
+        return await ask(prompt)
+
+    async def visit(node):
+        children = node.get('nodes') or []
+        if children:
+            await asyncio.gather(*(visit(child) for child in children))
+        if node.get('summary'):
+            return
+        node['summary'] = await (parent_summary(node) if children else leaf_summary(node))
+
+    await asyncio.gather(*(visit(root) for root in structure))
     return structure
 
 
