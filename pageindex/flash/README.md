@@ -30,6 +30,7 @@ missing, non-PDF, encrypted, empty, or unreadable file.
             "node_id": str,       # 4-digit, zero-padded
             "start_index": int,
             "end_index": int,
+            "key_items": [str],   # titles of merged-away subsections; absent when none
             "nodes": [...],       # absent on leaf nodes
         }
     ],
