@@ -477,7 +477,8 @@ def merge(structure, routing, log, frozen, progress=False):
         checked = tree_cost_via_frontier(node, routing)
         span = S(node)
         if span <= cost:
-            removed = [c["node_id"] for c, _ in flatten(node["nodes"])]
+            # trees arrive here before ids are assigned in the main pipeline
+            removed = [c.get("node_id") for c, _ in flatten(node["nodes"])]
             # titles are routing information; keep them on the parent, in document
             # order, carrying forward anything an earlier merge already folded in
             titles = []
@@ -496,12 +497,22 @@ def merge(structure, routing, log, frozen, progress=False):
                 node["key_items"] = titles
             frozen.add(node.get("node_id"))
             changed = True
-            note(progress, f"    merge  {node.get('node_id'):>8}  "
+            note(progress, f"    merge  {node.get('node_id') or '-':>8}  "
                            f"S={span} <= tree_cost={cost}  dropped {len(removed)} node(s)")
 
     for root in list(structure):
         visit(root)
     return changed
+
+
+def merge_tree(structure):
+    """Deterministic merge over a structure list; the no-LLM default path.
+
+    One bottom-up pass reaches the fixpoint: every decision is made after the
+    subtree below it is final.
+    """
+    merge(structure, ROUTING_COST, [], set())
+    return structure
 
 
 # --------------------------------------------------------------------------
