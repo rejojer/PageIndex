@@ -61,7 +61,8 @@ import re
 import sys
 from types import SimpleNamespace
 
-from .utils import ConfigLoader, _is_openai_model, llm_acompletion
+from .utils import (ConfigLoader, _is_openai_model, llm_acompletion,
+                    strip_internal_keys)
 
 TRIGGER_PAGES = 5        # only look ahead on nodes larger than this
 ROUTING_COST = 1         # R(v), in pages
@@ -816,6 +817,7 @@ def optimize_tree(doc, pdf_path=None, model=None, do_expand=None, **kwargs):
     result = asyncio.run(optimize(structure, pages, lines, model=model,
                                   page_count=page_count, do_expand=do_expand,
                                   **kwargs))
+    strip_internal_keys(result["structure"])
     doc["structure"] = result["structure"]
     return result
 
@@ -923,6 +925,7 @@ async def main():
     if result["new_issues"]:
         print(f"\nnew validation issues: {result['new_issues']}")
 
+    strip_internal_keys(structure)
     refined = dict(original)
     refined["structure"] = structure
     json.dump(refined, open(out_path, "w"), indent=2, ensure_ascii=False)
