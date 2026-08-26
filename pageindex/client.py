@@ -6,7 +6,7 @@ import re
 import threading
 import time
 import warnings
-from typing import Any, Callable, Iterator, Optional, Union, cast
+from typing import Any, Callable, Iterator, Mapping, Optional, Union, cast
 
 from .errors import PageIndexAPIError
 
@@ -78,7 +78,7 @@ def _env_cloud_key(spelling: str, inline: str = "api_key=...") -> str:
     return key
 
 
-# One argument vocabulary regardless of spelling: every value is shape-
+# One argument vocabulary regardless of spelling: these values are shape-
 # checked in the constructor, so a wrong type or an empty value refuses
 # there as a PageIndexAPIError — never later, never silently.
 _ARG_TYPES: "dict[str, tuple[type, ...]]" = {
@@ -338,15 +338,15 @@ class PageIndexClient:
         self,
         api_key: Optional[str] = None,
         *,
-        index: Optional[Union[dict[str, Any], str]] = None,
-        chat: Optional[Union[dict[str, Any], str]] = None,
+        index: Optional[Union[Mapping[str, Any], str]] = None,
+        chat: Optional[Union[Mapping[str, Any], str]] = None,
         mode: Optional[str] = None,
         index_model: Optional[str] = None,
         chat_model: Optional[str] = None,
         model: Optional[str] = None,
         summary_model: Optional[str] = None,
         retrieve_model: Optional[str] = None,
-        storage_path: Optional[str] = None,
+        storage_path: Optional[Union[str, os.PathLike[str]]] = None,
         index_backend: Optional[dict[str, Any]] = None,
         chat_backend: Optional[dict[str, Any]] = None,
     ):
@@ -915,6 +915,11 @@ class PageIndexClient:
                 reasoning_effort=reasoning_effort, extra_body=extra_body,
                 extra_headers=extra_headers, backend=backend,
             )
+        if not getattr(self, "api_key", None):
+            raise PageIndexAPIError(
+                "chat_model is empty — it configures nothing, and a local "
+                "client has no managed chat to fall back to. Set "
+                "chat_model=... to run the agent with your own model.")
         if (model is not None or max_turns is not None or top_p is not None
                 or max_tokens is not None or reasoning_effort is not None
                 or extra_body is not None or extra_headers is not None
@@ -1249,8 +1254,9 @@ class PageIndexClient:
 
     def _local_doc_scope(self, doc_id):
         """doc_id for the tool layer: passed through locally (structural
-        allowlist), dropped on cloud where scoping is server-side and the
-        config helpers keep prompt-level targeting."""
+        allowlist), dropped on cloud — its tools take no allowlist, so
+        own-model chat and the config helpers target at the prompt level
+        only."""
         from .agent_tools import _require_doc_selection
         _require_doc_selection(doc_id)
         if not getattr(self, "api_key", None):
@@ -1612,8 +1618,8 @@ class PageIndexCloudClient(PageIndexClient):
         self,
         api_key: Optional[str] = None,
         *,
-        index: Optional[Union[dict[str, Any], str]] = None,
-        chat: Optional[Union[dict[str, Any], str]] = None,
+        index: Optional[Union[Mapping[str, Any], str]] = None,
+        chat: Optional[Union[Mapping[str, Any], str]] = None,
         chat_model: Optional[str] = None,
         retrieve_model: Optional[str] = None,
         chat_backend: Optional[dict[str, Any]] = None,
@@ -1642,14 +1648,14 @@ class PageIndexLocalClient(PageIndexClient):
     def __init__(
         self,
         *,
-        index: Optional[Union[dict[str, Any], str]] = None,
-        chat: Optional[Union[dict[str, Any], str]] = None,
+        index: Optional[Union[Mapping[str, Any], str]] = None,
+        chat: Optional[Union[Mapping[str, Any], str]] = None,
         index_model: Optional[str] = None,
         chat_model: Optional[str] = None,
         model: Optional[str] = None,
         summary_model: Optional[str] = None,
         retrieve_model: Optional[str] = None,
-        storage_path: Optional[str] = None,
+        storage_path: Optional[Union[str, os.PathLike[str]]] = None,
         index_backend: Optional[dict[str, Any]] = None,
         chat_backend: Optional[dict[str, Any]] = None,
     ):
