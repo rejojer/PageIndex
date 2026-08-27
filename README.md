@@ -20,7 +20,7 @@
   <a href="https://chat.pageindex.ai">🖥️ Chat Platform</a>&nbsp; • &nbsp;
   <a href="https://pageindex.ai/developer">🔌 MCP & API</a>&nbsp; • &nbsp;
   <a href="https://docs.pageindex.ai">📖 Docs</a>&nbsp; • &nbsp;
-  <a href="https://discord.com/invite/VuXuf29EUj">💬 Discord</a>&nbsp; • &nbsp;
+  <a href="https://pageindex.ai/blog">📝 Blog</a>&nbsp; • &nbsp;
   <a href="https://ii2abc2jejf.typeform.com/to/tK3AXl8T">✉️ Contact</a>&nbsp;
 </h4>
   
@@ -31,22 +31,23 @@
 <details open>
 <summary><h2>Updates</h2></summary>
 
-- [2026/08] 🔥 [**PageIndex SDK**](#quickstart): `pip install -U pageindex` now ships **local mode**: index, retrieve, and chat entirely on your machine with your own LLM key, or point the same client at PageIndex Cloud with an API key.
-- [2026/08] ⚡ [**PageIndex Flash**](#step-2-build-the-tree-index): tree structure generation from PDFs in seconds, with structure extracted heuristically instead of by an LLM.
-- [PageIndex Chat](https://chat.pageindex.ai): a human-like document analysis agent for long professional documents. Also available via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer).
+- [Aug '26] 🔥 [**PageIndex SDK**](#quickstart): `pip install -U pageindex` now ships **local mode**: index, retrieve, and chat entirely on your machine with your own LLM key, or point the same client at PageIndex Cloud with an API key.
+- [Aug '26] ⚡ [**PageIndex Flash**](#step-2-build-the-tree-index): tree structure generation from PDFs in seconds, with structure extracted heuristically from the document's own layout info instead of built by an LLM.
+- [Scale PageIndex to Millions of Documents](https://pageindex.ai/blog/pageindex-filesystem): *PageIndex File System* is a file-level tree indexing layer that lets PageIndex reason over an entire corpus, not just a single document.
+- [PageIndex Chat](https://chat.pageindex.ai): a human-like document analysis agent for long professional documents.<!-- Also available via [MCP](https://pageindex.ai/developer) or [API](https://pageindex.ai/developer). -->
 
 </details>
 
 
 
-## What is PageIndex?
+# What is PageIndex?
 
 Are you frustrated with vector database retrieval accuracy for long and complex documents? Vector-based RAG retrieves by semantic **similarity**. But **similarity ≠ relevance** — what retrieval actually needs is relevance, and relevance requires **reasoning**. On professional documents that demand contextual understanding, domain expertise, and multi-step reasoning, similarity search misses what is relevant but not similar, and returns what is similar but not relevant.
 
 Inspired by AlphaGo, **[PageIndex](https://vectify.ai/pageindex)** replaces the vector index with a **hierarchical tree index** and lets an LLM **reason** its way through it, the way a human expert turns to and reads the right section of a long report. Retrieval happens in two steps:
 
 1. **Index**: generate a **tree-structure index** for each document
-2. **Retrieve**: **search that tree** with LLM reasoning, agentically
+2. **Retrieve**: agentically **search that tree** with LLM reasoning
 
 <div align="center">
   <a href="https://pageindex.ai/blog/pageindex-intro" target="_blank" title="The PageIndex Framework">
@@ -55,9 +56,9 @@ Inspired by AlphaGo, **[PageIndex](https://vectify.ai/pageindex)** replaces the 
 </div>
 
 
-### Why it works
+### TL;DR
 
-> PageIndex is a vectorless, reasoning-based RAG engine that mirrors how humans read, delivering traceable, explainable, and context-aware retrieval, without vector databases or chunking.
+<blockquote>PageIndex is a <b>vectorless</b>, <b>reasoning-based RAG</b> engine that <b>mirrors how humans read</b>, delivering <b>traceable</b>, <b>explainable</b>, and <b>context-aware</b> retrieval, with <b>no vector DBs</b> or <b>chunking</b>.</blockquote>
 
 ### Compare with Vector RAG
 
@@ -71,11 +72,11 @@ Inspired by AlphaGo, **[PageIndex](https://vectify.ai/pageindex)** replaces the 
 
 It is ideal for financial reports, legal documents, regulatory filings, technical manuals, medical literature, academic textbooks, and any other long, complex professional document.
 
-> PageIndex achieved **state-of-the-art** [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench (financial document QA benchmark), vastly outperforming vector-based RAG (see [Benchmarks](#benchmarks)).
+> PageIndex achieved **state-of-the-art** [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench (financial document QA benchmark), vastly outperforming vector-based RAG (see [Benchmarks](#leading-accuracy-on-financebench)).
 
 
 
-## Quickstart
+# Quickstart
 
 ```bash
 pip install -U pageindex
@@ -88,7 +89,7 @@ from pageindex import PageIndexClient
 
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
 
-client = PageIndexClient(                     
+client = PageIndexClient(
     index="gpt-5.6-luna",               # model to build the tree index
     chat="gpt-5.6-sol",                 # model to search the tree
 )
@@ -104,7 +105,7 @@ print(answer)
 - **`index=`: a basic model is sufficient.** The index model generates the document's tree index. A basic model is sufficient to produce a good tree structure.
 - **`chat=`: use the best model you can afford.** The chat model searches the tree to retrieve information. See [Query cost and accuracy](#query-cost-and-accuracy).
 
-See the [Detailed Usage Guide](#detailed-usage-guide) to configure other models, or [integrate PageIndex with your own agent](#integrate-with-your-own-agent).
+See the [SDK client usage guide](#a-use-pageindex-through-the-sdk-client) to configure other models and more, or [integrate PageIndex with your own agent](#b-integrate-pageindex-with-your-own-agent).
 
 ### Get Answers with Citations
 
@@ -112,13 +113,8 @@ To request inline page-level citations, pass a system message together with the 
 
 ```python
 messages = [
-    {
-        "role": "system",
-        "content": (
-            'Cite only statements supported by tool outputs using '
-            '<cite doc="{docName}" page="{pageNumber}"/>'
-        ),
-    },
+    {"role": "system", "content": """Cite only statements supported by tool outputs
+        using <cite doc="{docName}" page="{pageNumber}"/>"""},
     {"role": "user", "content": "Summarize the document."},
 ]
 
@@ -132,52 +128,17 @@ Revenue increased during the reporting period. <cite doc="report.pdf" page="12"/
 ```
 
 
-## Benchmarks
+# Usage Guide
 
-### Indexing cost and time
+Two ways to use PageIndex: (a) directly through the SDK client, or (b) integrate it into your own agent.
 
-Building a tree locally runs **about $0.001 per page** with `index_model="gpt-5.6-luna"`, so a 1,000-page textbook costs a little over a dollar and a few minutes, once, and every later question reuses it. PageIndex is designed not to rely heavily on the model used at index time, so in our experiments a basic model does not hurt quality.
+### (a) Use PageIndex through the SDK client
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/index-cost-dark.png">
-  <img src="assets/index-cost-light.png" alt="Indexing cost against document length, log-log, for nine PDFs from 9 to 1,098 pages. Points track a $0.0011-per-page reference line; the spread around it is text density, not length.">
-</picture>
+End to end in three steps: set up, index, ask. Expand a step below for its full options.
 
-Indexing time also scales predictably with document length. In the same local setup, the benchmark documents (9 to 1,098 pages) finished in roughly **13 seconds to 4.5 minutes**.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/index-time-dark.png">
-  <img src="assets/index-time-light.png" alt="Indexing time against document length, log-log, for nine PDFs from 9 to 1,098 pages. The measured indexing times range from about 13 seconds to 4.5 minutes and increase predictably with document length.">
-</picture>
-
-
-
-### Query cost and accuracy
-
-[**PageIndex-OSS-Benchmark**](https://github.com/VectifyAI/PageIndex-OSS-Benchmark) measures exactly the setup in the quickstart above (`PageIndexClient()` in local mode, flash indexing, no OCR) on 62 lookup questions over 34 PDFs (1,945 pages) drawn from [MMLongBench-Doc-V2](https://github.com/VectifyAI/MMLongBench-Doc-V2). Every question's answer is a fact stated in running text, so a wrong answer is a **retrieval or reading failure**, not a reasoning one.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/results-dark.png">
-  <img src="assets/results-light.png" alt="Accuracy against average cost per question. Each model forms a near-vertical reasoning-effort ladder; moving between models costs an order of magnitude a step.">
-</picture>
-
-
-Full results, data, and the runner are in the [benchmark repo](https://github.com/VectifyAI/PageIndex-OSS-Benchmark).
-
-
-
-
-<a id="detailed-usage-guide"></a>
 <details>
-<summary>
-
-## Detailed Usage Guide
-
-</summary>
-
+<summary><b>⚙️ Step 1: Initialize the client</b></summary>
 <br>
-
-### ⚙️ Step 1: Initialize the client
 
 Create a local client and choose the models used for indexing and retrieval:
 
@@ -227,10 +188,12 @@ chat_model = "openrouter/anthropic/claude-sonnet-4-6"
 
 For model names and API key settings for other providers, see the [LiteLLM provider documentation](https://docs.litellm.ai/docs/providers).
 
+</details>
+<br>
 
-<a id="step-2-build-the-tree-index"></a>
-
-### 🌲 Step 2: Build the tree index
+<details>
+<summary><a id="step-2-build-the-tree-index"></a><b>🌲 Step 2: Build the tree index</b></summary>
+<br>
 
 `submit_document` defaults to **Flash** indexing: the structure is extracted from the PDF's own layout (no LLM), and a model is called only for node summaries and the tree-optimization expansion pass. It takes seconds.
 
@@ -275,10 +238,12 @@ A PageIndex tree looks like a table of contents optimized for LLMs and agents:
 
 See more example [documents](https://github.com/VectifyAI/PageIndex/tree/main/examples/documents) and generated [tree structures](https://github.com/VectifyAI/PageIndex/tree/main/examples/documents/results).
 
+</details>
+<br>
 
-
-
-### 💬 Step 3: Ask questions
+<details>
+<summary><b>💬 Step 3: Ask questions</b></summary>
+<br>
 
 `chat()` is the one-line surface. Underneath it is a document-QA agent, and you can talk to it over whichever protocol your stack already speaks:
 
@@ -293,7 +258,7 @@ Pass a string or role/content history and get the answer back.
 **Stream the answer:**
 
 ```python
-client.chat(question, doc_id=doc_id, stream=True)
+client.chat("...", doc_id=doc_id, stream=True)
 ```
 
 Returns the answer as text chunks.
@@ -326,62 +291,169 @@ Pass a list of ids to `doc_id` to search several documents at once, and keep it 
 
 </details>
 
-<a id="integrate-with-your-own-agent"></a>
+### (b) Integrate PageIndex with your own agent
+
+PageIndex can also be integrated into your own agent. Each example below covers a different framework:
+
 <details>
-<summary>
-
-## Integrate PageIndex with your own agent
-
-</summary>
-
+<summary><b>OpenAI Agents SDK</b></summary>
 <br>
 
-Instead of calling PageIndex's agent, hand PageIndex's tools to yours. One call fills every slot:
-
-**OpenAI Agents SDK:**
+Ships with the SDK, no extras needed:
 
 ```python
 from agents import Agent, Runner
 
 agent = Agent(**client.openai_agent_config(doc_id=doc_id))
 result = Runner.run_sync(agent, "Summarize the auditor's concerns.")
+print(result.final_output)
 ```
 
-`openai_agent_config()` provides the instructions and tools required by an OpenAI agent.
-
-**Anthropic SDK tool runner:**
+`openai_agent_config()` returns the instructions and tools an `Agent` needs. To use your own prompt or pick tools yourself, assemble the pieces directly:
 
 ```python
-runner = anthropic_client.beta.messages.tool_runner(
+agent = Agent(
+    name="PageIndex",
+    instructions=client.agent_instructions(doc_id=doc_id),   # or your own prompt
+    tools=client.as_openai_tools(doc_id=doc_id),              # include_management=True adds deletion
+    model=client.chat_model,                                  # local clients only
+)
+```
+
+</details>
+<br>
+
+<details>
+<summary><b>Anthropic SDK tool runner</b></summary>
+<br>
+
+Install with `pip install 'pageindex[anthropic]'`:
+
+```python
+import anthropic
+
+runner = anthropic.Anthropic().beta.messages.tool_runner(
     **client.anthropic_runner_config(model="claude-sonnet-4-6", doc_id=doc_id),
+    messages=[{"role": "user", "content": "Summarize the auditor's concerns."}],
+)
+final = runner.until_done()
+print(final.content[-1].text)
+```
+
+`anthropic_runner_config()` fills every `tool_runner` slot except `messages`. The explicit form:
+
+```python
+runner = anthropic.Anthropic().beta.messages.tool_runner(
+    model="claude-sonnet-4-6",
+    max_tokens=8192,
+    system=client.agent_instructions(doc_id=doc_id),
+    tools=client.as_anthropic_tools(doc_id=doc_id),   # asynchronous=True for AsyncAnthropic
+    max_iterations=10,
     messages=[{"role": "user", "content": "Summarize the auditor's concerns."}],
 )
 ```
 
-`anthropic_runner_config()` configures Anthropic's native tool runner. Install the integration with `pip install 'pageindex[anthropic]'`.
+</details>
+<br>
 
-**Claude Agent SDK:**
+<details>
+<summary><b>Claude Agent SDK</b></summary>
+<br>
+
+Install with `pip install 'pageindex[claude]'`. The Claude Agent SDK is async-native:
 
 ```python
+from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query
+
 options = ClaudeAgentOptions(**client.claude_agent_config(doc_id=doc_id))
+async for message in query(prompt="Summarize the auditor's concerns.", options=options):
+    if isinstance(message, ResultMessage):
+        print(message.result)
 ```
 
-`claude_agent_config()` creates the options for the Claude Agent SDK. Install the integration with `pip install 'pageindex[claude]'`.
-
-**Other agent frameworks:**
+`claude_agent_config()` supplies the system prompt, the PageIndex MCP server, and its tool pre-approval. The explicit form:
 
 ```python
-tools = client.agent_tools()
+options = ClaudeAgentOptions(
+    system_prompt=client.agent_instructions(doc_id=doc_id),
+    mcp_servers={"pageindex": client.as_claude_mcp(doc_id=doc_id)},
+    allowed_tools=["mcp__pageindex"],
+)
 ```
 
-`agent_tools()` returns plain Python functions that work with LangChain, PydanticAI, and other agent frameworks.
+</details>
+<br>
 
-Each `*_config` helper is sugar over the explicit pieces (`client.agent_instructions()` for the system prompt, `client.as_openai_tools()` / `as_anthropic_tools()` / `as_claude_mcp()` for the tools), so you can swap in your own prompt whenever you need to. Locally, `doc_id` is enforced at the tool layer, not just prompted: out-of-scope lookups return `NOT_FOUND`.
+<details>
+<summary><b>Other agent frameworks</b></summary>
+<br>
+
+```python
+tools = client.agent_tools(doc_id=doc_id)   # plain functions returning JSON
+```
+
+`agent_tools()` returns plain Python functions that work with LangChain, PydanticAI, and any other agent framework.
+
+Every helper above accepts `doc_id=` to point the agent at specific documents and `include_management=True` to also expose document deletion (off by default). Locally, `doc_id` is enforced at the tool layer, not just prompted: out-of-scope lookups return `NOT_FOUND`.
 
 </details>
 
 
-## PageIndex Cloud
+
+# Benchmarks
+
+### Running PageIndex locally
+
+#### Indexing cost and time
+
+Building a tree locally runs **about $0.001 per page** with `gpt-5.6-luna` as the index model, so a 1,000-page textbook costs a little over a dollar and a few minutes, once, and every later question reuses it. PageIndex is designed not to rely heavily on the model used at index time, so in our experiments a basic model does not hurt quality.
+
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/index-cost-dark.png">
+  <img src="assets/index-cost-light.png" width="75%" alt="Indexing cost against document length, log-log, for nine PDFs from 9 to 1,098 pages. Points track a $0.0011-per-page reference line; the spread around it is text density, not length.">
+</picture>
+</div>
+
+Indexing time also scales predictably with document length. In the same local setup, the benchmark documents (9 to 1,098 pages) finished in roughly **13 seconds to 4.5 minutes**.
+
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/index-time-dark.png">
+  <img src="assets/index-time-light.png" width="75%" alt="Indexing time against document length, log-log, for nine PDFs from 9 to 1,098 pages. The measured indexing times range from about 13 seconds to 4.5 minutes and increase predictably with document length.">
+</picture>
+</div>
+
+
+
+#### Query cost and accuracy
+
+[**PageIndex-OSS-Benchmark**](https://github.com/VectifyAI/PageIndex-OSS-Benchmark) measures exactly the setup in the quickstart above (`PageIndexClient()` in local mode, flash indexing, no OCR) on 62 lookup questions over 34 PDFs (1,945 pages) drawn from [MMLongBench-Doc-V2](https://github.com/VectifyAI/MMLongBench-Doc-V2). Every question's answer is a fact stated in running text, so a wrong answer is a **retrieval or reading failure**, not a reasoning one.
+
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/results-dark.png">
+  <img src="assets/results-light.png" width="75%" alt="Accuracy against average cost per question. Each model forms a near-vertical reasoning-effort ladder; moving between models costs an order of magnitude a step.">
+</picture>
+</div>
+
+
+Full results, data, and the runner are in the [benchmark repo](https://github.com/VectifyAI/PageIndex-OSS-Benchmark).
+
+### Leading accuracy on FinanceBench
+
+PageIndex reached a state-of-the-art [**98.7% accuracy**](https://vectify.ai/blog/Mafin2.5) on [FinanceBench](https://arxiv.org/abs/2311.11944) (financial document QA benchmark), vastly outperforming vector-based RAG.
+
+<div align="center">
+  <a href="https://github.com/VectifyAI/Mafin2.5-FinanceBench">
+    <img src="https://github.com/user-attachments/assets/571aa074-d803-43c7-80c4-a04254b782a3" width="70%">
+  </a>
+</div>
+
+Explore the full FinanceBench [evaluation results](https://github.com/VectifyAI/Mafin2.5-FinanceBench) and the [blog post](https://vectify.ai/blog/Mafin2.5).
+
+
+# PageIndex Cloud
 
 The open-source version is ideal for text-heavy PDFs and local workflows. With **PageIndex Cloud, document indexing and storage run in the cloud**: PageIndex handles parsing, OCR, image understanding, tree-index construction, and managed storage for you. The chat and retrieval layer remains **compatible with your model**, so you can search the cloud-hosted index using the model provider your application already uses.
 
@@ -393,7 +465,6 @@ from pageindex import PageIndexClient
 
 os.environ["PAGEINDEX_API_KEY"] = "your-pageindex-key"
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
-
 
 client = PageIndexClient(
     index="cloud",                       # build and store the index in PageIndex Cloud
@@ -422,8 +493,8 @@ print(client.chat("What was the 2023 operating margin?", doc_id=doc_id))
 
 ### Ready to Try It?
 
-- [Get a PageIndex API Key](https://developer.pageindex.ai/)
-- [Read the PageIndex Cloud Documentation](https://docs.pageindex.ai/)
+- Get a [PageIndex API key](https://developer.pageindex.ai/)
+- Read the [PageIndex Cloud documentation](https://docs.pageindex.ai/)
 
 For dedicated deployment (VPC or on-premises), [contact us](https://ii2abc2jejf.typeform.com/to/gVv7qkaN) or [book a demo](https://calendly.com/pageindex/meet).
 
@@ -431,7 +502,7 @@ For dedicated deployment (VPC or on-premises), [contact us](https://ii2abc2jejf.
 
 ---
 
-## ⭐ Support Us
+# ⭐ Support Us
 
 Leave us a star 🌟 if you like our project. Thank you!  
 
