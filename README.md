@@ -102,7 +102,7 @@ print(answer)
 
 ### Model Recommendations
 
-- **`index=`: a basic model is sufficient.** The index model generates the document's tree index. A basic model is sufficient to produce a good tree structure.
+- **`index=`: a basic model is sufficient.** The tree structure itself is extracted from the document layout without an LLM; the index model only summarizes and refines it, which a basic model does well.
 - **`chat=`: use the best model you can afford.** The chat model searches the tree to retrieve information. See [Query cost and accuracy](#query-cost-and-accuracy).
 
 See the [SDK client usage guide](#a-use-pageindex-through-the-sdk-client) to configure other models and more, or [integrate PageIndex with your own agent](#b-integrate-pageindex-with-your-own-agent).
@@ -195,7 +195,7 @@ For model names and API key settings for other providers, see the [LiteLLM provi
 <summary><a id="step-2-build-the-tree-index"></a><b>🌲 Step 2: Build the tree index</b></summary>
 <br>
 
-`submit_document` defaults to **Flash** indexing: the structure is extracted from the PDF's own layout (no LLM), and a model is called only for node summaries and the tree-optimization expansion pass. It takes seconds.
+`submit_document` defaults to **PageIndex Flash** indexing: the structure is extracted from the PDF's own layout (no LLM), and a model is called only for node summaries and the tree-optimization expansion pass. It takes seconds.
 
 ```python
 doc_id = client.submit_document("report.pdf")["doc_id"]
