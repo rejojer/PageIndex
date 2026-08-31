@@ -102,7 +102,7 @@ print(answer)
 - **`index=`: a basic model is sufficient.** The tree structure itself is extracted from the document layout without an LLM; the index model only summarizes and refines it, which a basic model does well.
 - **`chat=`: use the best model you can afford.** The chat model searches the tree to retrieve information. See [Query cost and accuracy](#query-cost-and-accuracy).
 
-### [Use PageIndex through the SDK client →](https://docs.pageindex.ai/sdk/chat)
+### [Use PageIndex through the SDK client →](https://docs.pageindex.ai/getting-started)
 
 Configure other models, streaming, multi-document search, citations, and more.
 
