@@ -71,7 +71,6 @@ Inspired by AlphaGo, **[PageIndex](https://vectify.ai/pageindex)** replaces the 
 
 It is ideal for financial reports, legal documents, regulatory filings, technical manuals, medical literature, academic textbooks, and any other long, complex professional document.
 
-> PageIndex achieved **state-of-the-art** [98.7% accuracy](https://github.com/VectifyAI/Mafin2.5-FinanceBench) on FinanceBench (financial document QA benchmark), vastly outperforming vector-based RAG (see [Benchmarks](#leading-accuracy-on-financebench)).
 
 
 
@@ -272,4 +271,4 @@ PageIndex Blog, Sep 2025.
 
 ---
 
-© 2026 [Vectify AI](https://vectify.ai)
+© 2026 [PageIndex AI](https://pageindex.ai)
