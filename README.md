@@ -94,8 +94,7 @@ client = PageIndexClient(
 )
 doc_id = client.submit_document("report.pdf")["doc_id"]
 
-answer = client.chat("What was the 2023 operating margin, and where is it stated?",
-                     doc_id=doc_id)
+answer = client.chat("What was the 2023 operating margin?", doc_id=doc_id)
 print(answer)
 ```
 
@@ -196,7 +195,7 @@ client = PageIndexClient(
     chat="gpt-5.6-sol",                  # use your preferred compatible model for chat
 )
 
-# The rest of your code stays the same (wait=True: cloud indexing is asynchronous)
+
 doc_id = client.submit_document("report.pdf", wait=True)["doc_id"]
 print(client.chat("What was the 2023 operating margin?", doc_id=doc_id))
 ```
