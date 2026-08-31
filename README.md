@@ -263,29 +263,6 @@ client.chat("...", doc_id=doc_id, stream=True)
 
 Returns the answer as text chunks.
 
-**Use the OpenAI Chat Completions format:**
-
-```python
-client.chat_completions(messages, doc_id=doc_id)
-```
-
-Returns the full envelope, including token usage, streaming metadata, and `finish_reason`.
-
-**Use the OpenAI Responses format:**
-
-```python
-client.responses("...", doc_id=doc_id, reasoning={"effort": "high"})
-```
-
-Returns the agent's process transcript in `items`. Append those items to the next call's `input` to preserve memory and benefit from provider prompt caching. This requires a Responses-compatible backend in local mode.
-
-**Use the Anthropic Messages format:**
-
-```python
-client.messages("...", model="claude-sonnet-4-6", doc_id=doc_id)
-```
-
-Uses Anthropic's native Messages API and tool runner. Install it with `pip install 'pageindex[anthropic]'`.
 
 Pass a list of ids to `doc_id` to search several documents at once, and keep it identical across a conversation's calls.
 
