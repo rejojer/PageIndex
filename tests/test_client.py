@@ -1967,3 +1967,40 @@ def test_blank_chat_model_carries_no_model_into_agent_config():
     client = PageIndexClient()
     client.chat_model = "   "
     assert "model" not in client.openai_agent_config()
+
+
+def test_preload_stamps_litellm_log_level(monkeypatch):
+    """The background preload stamps LITELLM_LOG before litellm's import
+    initializes its logger, so import-time WARNING chatter never reaches
+    stderr; setdefault, so a caller's explicit choice wins."""
+    import pageindex.client as client_mod
+    monkeypatch.setattr(client_mod, "_litellm_preload_started", True)
+    monkeypatch.delenv("LITELLM_LOG", raising=False)
+    client_mod._preload_litellm()
+    assert os.environ["LITELLM_LOG"] == "ERROR"
+    monkeypatch.setenv("LITELLM_LOG", "DEBUG")
+    client_mod._preload_litellm()
+    assert os.environ["LITELLM_LOG"] == "DEBUG"
+
+
+def test_retry_notice_logs_instead_of_stdout(monkeypatch, capsys, caplog):
+    """A retried completion must not write into the caller's stdout — that
+    channel belongs to answers and CLI output; the notice rides logging
+    beside the error it accompanies."""
+    litellm = pytest.importorskip("litellm")
+    from pageindex import utils
+    attempts = []
+
+    def flaky(**kwargs):
+        if not attempts:
+            attempts.append(1)
+            raise RuntimeError("boom")
+        message = types.SimpleNamespace(content="ok")
+        choice = types.SimpleNamespace(message=message, finish_reason="stop")
+        return types.SimpleNamespace(choices=[choice])
+
+    monkeypatch.setattr(litellm, "completion", flaky)
+    monkeypatch.setattr(utils.time, "sleep", lambda s: None)
+    assert utils.llm_completion("openai/gpt-x", "hi") == "ok"
+    assert capsys.readouterr().out == ""
+    assert any("Retrying" in r.getMessage() for r in caplog.records)

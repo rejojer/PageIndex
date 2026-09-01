@@ -58,6 +58,26 @@ def _mute_litellm_bridge_usage_warning() -> None:
         message=r"Pydantic serializer warnings:\s+"
                 r"(PydanticSerializationUnexpectedValue\()?Expected `ResponseAPIUsage`")
 
+
+def _quiet_litellm() -> None:
+    """litellm print()s a red "Provider List:" banner into stdout when a
+    provider lookup fails — its OpenRouter adapter probes supports_reasoning()
+    with the provider-stripped model name on every completion, so any model
+    missing from litellm's static map stamps the banner into the middle of a
+    streamed answer (get_llm_provider_logic, seen on 1.97). Flip litellm's own
+    embedder switch, as its Router does; it gates only this banner and the
+    "Give Feedback / Get Help" one. Its logger quiets the same way — WARNING
+    chatter (remote-map fetch fallbacks, cost hiccups) is not actionable for
+    SDK callers — unless the caller picked a level via LITELLM_LOG, which
+    litellm honors at import and this respects. The dotted litellm name
+    covers the module-level loggers its adapters create; errors still raise
+    and log with their full text."""
+    import litellm
+    litellm.suppress_debug_info = True
+    if os.environ.get("LITELLM_LOG", "ERROR").upper() == "ERROR":
+        for name in ("LiteLLM", "LiteLLM Router", "LiteLLM Proxy", "litellm"):
+            logging.getLogger(name).setLevel(logging.ERROR)
+
 # Backward compatibility: support CHATGPT_API_KEY as alias for OPENAI_API_KEY
 if not os.getenv("OPENAI_API_KEY") and os.getenv("CHATGPT_API_KEY"):
     import warnings
@@ -150,6 +170,7 @@ def llm_completion(model, prompt, chat_history=None, return_finish_reason=False)
     backend = _llm_backend.get()
     model = _litellm_model(model)
     _repair_litellm_types()
+    _quiet_litellm()
     for i in range(max_retries):
         try:
             response = litellm.completion(**{
@@ -168,7 +189,7 @@ def llm_completion(model, prompt, chat_history=None, return_finish_reason=False)
         except Exception as e:
             if getattr(e, "status_code", None) in _NO_RETRY_STATUS:
                 raise
-            print('************* Retrying *************')
+            logging.warning("Retrying LLM completion")
             logging.error(f"Error: {e}")
             if i < max_retries - 1:
                 time.sleep(1)
@@ -186,6 +207,7 @@ async def llm_acompletion(model, prompt):
     backend = _llm_backend.get()
     model = _litellm_model(model)
     _repair_litellm_types()
+    _quiet_litellm()
     for i in range(max_retries):
         try:
             response = await litellm.acompletion(**{
@@ -199,7 +221,7 @@ async def llm_acompletion(model, prompt):
         except Exception as e:
             if getattr(e, "status_code", None) in _NO_RETRY_STATUS:
                 raise
-            print('************* Retrying *************')
+            logging.warning("Retrying LLM completion")
             logging.error(f"Error: {e}")
             if i < max_retries - 1:
                 await asyncio.sleep(1)

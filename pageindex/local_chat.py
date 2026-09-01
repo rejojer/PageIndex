@@ -219,9 +219,10 @@ def _openai_model(protocol: str, model_name: str, backend=None):
             "installed. Run:  pip install 'litellm>=1.97'"
         )
     from .utils import (_litellm_model, _mute_litellm_bridge_usage_warning,
-                        _repair_litellm_types)
+                        _quiet_litellm, _repair_litellm_types)
     _repair_litellm_types()
     _mute_litellm_bridge_usage_warning()
+    _quiet_litellm()
     try:
         wire = _litellm_model(model_name)
     except litellm.NotFoundError as exc:
