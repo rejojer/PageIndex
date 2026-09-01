@@ -837,9 +837,9 @@ class PageIndexClient:
                 model's default behavior applies.
             show_process: Streamed own-model chat — weave the run into
                 the text stream for display: thinking flows as
-                "[thinking] " sections, each tool call as a "[tool] name
-                arguments" line with its clipped result, and the answer
-                unlabeled. **On by default**, weaving what the mode
+                "[thinking] " sections, each tool call as a "[tool_call]
+                name arguments" line with its "[tool_result]" line, and
+                the answer unlabeled. **On by default**, weaving what the mode
                 serves: the in-process agent's full run; on a managed
                 client, the tool calls the endpoint streams (its wire
                 carries no thinking and no tool results). Pass ``False``
@@ -847,7 +847,7 @@ class PageIndexClient:
                 streamed answer to the conversation history.
                 ``True`` shows everything; a dict (typed as
                 ``pageindex.ChatProcessOptions``) selects the parts —
-                ``thinking`` / ``tool_calls`` / ``tool_results``, bools
+                ``thinking`` / ``tool_call`` / ``tool_result``, bools
                 defaulting on — and sets ``max_chars``, the per-line
                 summary cap in characters (default 200). Omitted keys
                 keep their defaults, so ``{"thinking": False}`` hides

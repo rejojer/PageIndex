@@ -615,8 +615,8 @@ def _clip(text, cap: int = 200) -> str:
     return f"{flat[:cap]}... (+{len(flat) - cap} chars)"
 
 
-_PROCESS_DEFAULTS = {"thinking": True, "tool_calls": True,
-                     "tool_results": True, "max_chars": 200}
+_PROCESS_DEFAULTS = {"thinking": True, "tool_call": True,
+                     "tool_result": True, "max_chars": 200}
 
 
 def _process_options(show_process) -> dict:
@@ -627,16 +627,16 @@ def _process_options(show_process) -> dict:
     if not isinstance(show_process, Mapping):
         raise PageIndexAPIError(
             "show_process must be True, False, or a dict with the keys "
-            "thinking / tool_calls / tool_results (bools) and max_chars "
+            "thinking / tool_call / tool_result (bools) and max_chars "
             "(int).")
     unknown = set(show_process) - set(_PROCESS_DEFAULTS)
     if unknown:
         raise PageIndexAPIError(
             "Unknown show_process keys: "
             f"{', '.join(sorted(map(repr, unknown)))} "
-            "— valid keys: thinking, tool_calls, tool_results, max_chars.")
+            "— valid keys: thinking, tool_call, tool_result, max_chars.")
     options = {**_PROCESS_DEFAULTS, **show_process}
-    for key in ("thinking", "tool_calls", "tool_results"):
+    for key in ("thinking", "tool_call", "tool_result"):
         if not isinstance(options[key], bool):
             raise PageIndexAPIError(f"show_process[{key!r}] must be a bool.")
     cap = options["max_chars"]
@@ -702,9 +702,10 @@ async def _chat_events_agen(client, agent, items, run_kwargs):
 
 def _weave(events, options) -> Iterator[str]:
     """Render the typed event stream as display text: a "[thinking] "
-    section per thinking burst, a "[tool] name args" line per call with
-    its clipped result, the answer unlabeled. options=None is the plain
-    answer-only view; closing this generator closes the source."""
+    section per thinking burst, a "[tool_call] name args" line per call
+    with its "[tool_result]" line, the answer unlabeled — labels are the
+    event type names. options=None is the plain answer-only view;
+    closing this generator closes the source."""
     try:
         if options is None:
             for ev in events:
@@ -714,7 +715,7 @@ def _weave(events, options) -> Iterator[str]:
         section = None   # the open flowing section: thinking/answer/tool
         opened = False   # anything yielded yet (first section takes no gap)
         cap = options["max_chars"]
-        last_call = None  # the [tool] line still open for nesting
+        last_call = None  # the [tool_call] line still open for nesting
         call_args = {}    # call_id -> clipped arguments, to label orphans
 
         def enter(kind, label: str = "") -> str:
@@ -736,7 +737,7 @@ def _weave(events, options) -> Iterator[str]:
                         if section != "thinking" else "")
                 yield head + ev["delta"]
             elif kind == "tool_call":
-                if not options["tool_calls"]:
+                if not options["tool_call"]:
                     continue
                 arguments = ev["arguments"]
                 if not isinstance(arguments, str):
@@ -744,20 +745,20 @@ def _weave(events, options) -> Iterator[str]:
                 clipped = _clip(arguments, cap)
                 last_call = ev["call_id"]
                 call_args[last_call] = clipped
-                line = f"[tool] {ev['name']} {clipped}"
+                line = f"[tool_call] {ev['name']} {clipped}"
                 yield enter("tool") + line.rstrip()
             elif kind == "tool_result":
-                if not options["tool_results"]:
+                if not options["tool_result"]:
                     continue
                 out = _clip(ev["output"], cap)
                 if section == "tool" and ev["call_id"] == last_call:
                     # directly under its own call line
-                    yield f"\n  -> {ev['name']}: {out}"
+                    yield f"\n[tool_result] {ev['name']}: {out}"
                 else:
                     # parallel calls, or call lines hidden: standalone,
                     # arguments echoed to say whose result this is
                     args = call_args.get(ev["call_id"], "")
-                    head = f"-> {ev['name']} {args}".rstrip()
+                    head = f"[tool_result] {ev['name']} {args}".rstrip()
                     gap = ("\n" if section == "tool" and last_call is None
                            else enter("tool"))
                     yield f"{gap}{head}: {out}"
