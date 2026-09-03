@@ -970,12 +970,14 @@ class PageIndexClient:
                 prompted. Cloud documents: the managed chat scopes
                 server-side; own-model chat targets at the prompt level.
             stream: Answer lane: return a ``ChatStream`` — iterate it for
-                the answer as text chunks as they are produced, or read
-                its ``.events`` property instead for the run as typed
-                event dicts — thinking/answer deltas, each tool call and
-                its full result (own-model chat only; never clipped). One
-                run serves one view. Protocol lanes: the protocol's own
-                event stream.
+                the answer as text chunks as they are produced
+                (``show_process`` is on by default, so the run's process
+                arrives woven in; ``show_process=False`` gives the bare
+                answer), or read its ``.events`` property instead for the
+                run as typed event dicts — thinking/answer deltas, each
+                tool call and its full result (own-model chat only; never
+                clipped). One run serves one view. Protocol lanes: the
+                protocol's own event stream.
             model: Own-model chat only — backend model name (defaults
                 to ``chat_model``). ``protocol="messages"`` needs it named
                 — a Claude model; there is no cross-vendor default.
@@ -985,12 +987,11 @@ class PageIndexClient:
                 spelling: LiteLLM's ``reasoning_effort``, Responses
                 ``reasoning.effort``, Messages ``output_config.effort``.
                 Unset sends nothing — the model's default applies.
-            show_process: Answer lane, streamed own-model chat — weave
-                the run into the text stream for display: thinking flows
-                as "[thinking] " sections, each tool call as a
-                "[tool_call] name arguments" line with its "[tool_result]"
-                line, and the answer unlabeled. **On by default**, weaving
-                what the mode
+            show_process: Answer lane, streamed chat — weave the run into
+                the text stream for display: thinking flows as
+                "[thinking] " sections, each tool call as a "[tool_call]
+                name arguments" line with its "[tool_result]" line, and
+                the answer unlabeled. **On by default**, weaving what the mode
                 serves: the in-process agent's full run; on a managed
                 client, the tool calls the endpoint streams (its wire
                 carries no thinking and no tool results). Pass ``False``
@@ -1048,9 +1049,10 @@ class PageIndexClient:
         Returns:
             - answer lane, stream=False: the answer string
             - answer lane, stream=True: a ``ChatStream`` — iterating it
-              yields text chunks (with show_process, the run's process
-              woven in as labeled sections); ``.events`` yields typed
-              event dicts: ``{"type": "thinking"|"answer", "delta": ...}``,
+              yields text chunks (with show_process, on by default, the
+              run's process woven in as labeled sections); ``.events``
+              yields typed event dicts:
+              ``{"type": "thinking"|"answer", "delta": ...}``,
               ``{"type": "tool_call", "call_id", "name", "arguments"}``,
               ``{"type": "tool_result", "call_id", "name", "output"}``
             - protocol lane, stream=False: the protocol's response
@@ -1073,12 +1075,14 @@ class PageIndexClient:
                 f"protocol={protocol!r} the run comes back as the protocol's "
                 "own transcript and events — drop show_process, or drop "
                 "protocol for the woven text stream.")
-        if (show_process is not False and show_process is not None
-                and not stream):
-            raise PageIndexAPIError(
-                "show_process shows the run as it happens and requires "
-                "stream=True; only show_process=False (or None) means "
-                f"off — got {show_process!r}.")
+        if show_process is not False and show_process is not None:
+            from .local_chat import _process_options
+            _process_options(show_process)  # a bad value chokes first
+            if not stream:
+                raise PageIndexAPIError(
+                    "show_process shows the run as it happens and requires "
+                    "stream=True; only show_process=False (or None) means "
+                    f"off — got {show_process!r}.")
         if isinstance(instructions, list) and protocol != "messages":
             raise PageIndexAPIError(
                 "instructions blocks are the Messages protocol's shape — "
@@ -1142,9 +1146,7 @@ class PageIndexClient:
                                        max_turns=max_turns, backend=backend,
                                        extra_headers=extra_headers,
                                        extra_body=extra_body)
-            from .local_chat import _process_options, run_cloud_chat_stream
-            if resolved is not False:
-                _process_options(resolved)  # choke before the request is sent
+            from .local_chat import run_cloud_chat_stream
             chunks = self.chat_completions(messages, stream=True,
                                            stream_metadata=True,
                                            doc_id=doc_id, model=model,
