@@ -300,8 +300,13 @@ def test_chat_completions_missing_framework(client, monkeypatch):
         client.chat_completions([{"role": "user", "content": "x"}])
 
 
-def test_cloud_guards():
+def test_cloud_guards(monkeypatch):
     cloud = PageIndexCloudClient(api_key="pi-test-key")
+    # empty is unset, as on the local lane — the managed chat serves it
+    monkeypatch.setattr(cloud._api, "chat_completions",
+                        lambda **kw: {"choices": [{"message": {"content": "ok"}}]})
+    assert cloud.chat("x", model="", reasoning_effort="", extra_body={},
+                      extra_headers={}, backend={}) == "ok"
     with pytest.raises(PageIndexAPIError, match="own chat model"):
         cloud.chat_completions([{"role": "user", "content": "x"}], model="m")
     with pytest.raises(PageIndexAPIError, match="own chat model"):
@@ -1487,6 +1492,10 @@ def test_reasoning_passthrough_reaches_each_engine(monkeypatch):
                                      None, None)
     assert agent.model_settings.reasoning is None
     assert agent.model_settings.extra_args is None
+    # "" is unset on this lane too, like the protocol lanes
+    agent = local_chat._openai_agent(None, "chat", "gpt-test", "sys",
+                                     None, None, reasoning_effort="")
+    assert agent.model_settings.extra_args is None
 
 
 @needs_agents
@@ -1551,24 +1560,49 @@ def test_sampling_knobs_ride_model_settings(client, store_path, fake_model,
     fake_model([[_msg_item("ok")]])
     result = client.chat("q", protocol="responses",
                          extra_body={"max_output_tokens": 321, "top_p": 0.9,
-                                     "temperature": 0.2})
+                                     "temperature": 0.2,
+                                     "metadata": {"tag": "abc"}})
     assert result["max_output_tokens"] == 321
     assert result["top_p"] == 0.9
     assert result["temperature"] == 0.2
+    assert result["metadata"] == {"tag": "abc"}
+    sent = seen["responses"].extra_body
+    assert {"max_output_tokens": 321, "top_p": 0.9, "temperature": 0.2,
+            "metadata": {"tag": "abc"}}.items() <= sent.items()
 
 
 @needs_agents
-def test_responses_envelope_echoes_reasoning(client, store_path, fake_model):
+def test_responses_envelope_echoes_reasoning(client, store_path, fake_model,
+                                             monkeypatch):
     seed_doc(store_path, "pi-a", "report.pdf")
     fake_model([[_msg_item("ok")]])
     result = client._responses("q", reasoning={"effort": "low"})
     assert result["reasoning"] == {"effort": "low"}
     fake_model([[_msg_item("ok")]])
     assert client._responses("q")["reasoning"] is None
+    seen = {}
+    real = local_chat._openai_agent
+
+    def spy(*args, **kwargs):
+        agent = real(*args, **kwargs)
+        seen[args[1]] = agent.model_settings
+        return agent
+
+    monkeypatch.setattr(local_chat, "_openai_agent", spy)
     fake_model([[_msg_item("ok")]])
     result = client.chat("q", protocol="responses",
                          extra_body={"reasoning": {"effort": "high"}})
     assert result["reasoning"] == {"effort": "high"}
+    assert seen["responses"].extra_body["reasoning"] == {"effort": "high"}
+    # effort joins the caller's reasoning object on the one channel to the
+    # wire; a separate reasoning= would be replaced whole by extra_body's
+    fake_model([[_msg_item("ok")]])
+    result = client.chat("q", protocol="responses", reasoning_effort="high",
+                         extra_body={"reasoning": {"summary": "auto"}})
+    assert seen["responses"].reasoning is None
+    assert seen["responses"].extra_body["reasoning"] == {
+        "summary": "auto", "effort": "high"}
+    assert result["reasoning"] == {"summary": "auto", "effort": "high"}
 
 
 @needs_agents
@@ -3042,12 +3076,28 @@ def test_chat_protocol_responses_is_the_door(client, monkeypatch):
                         lambda c, input, **kw: seen.append((input, kw)) or "door")
     knobs = dict(doc_id="pi-a", model="gpt-x", max_turns=3,
                  backend={"api_key": "k"}, extra_headers={"x": "1"},
-                 extra_body={"seed": 1}, instructions="be brief")
+                 instructions="be brief")
     assert client.chat("q", protocol="responses", reasoning_effort="low",
-                       **knobs) == "door"
-    assert client._responses("q", reasoning={"effort": "low"}, **knobs) == "door"
+                       extra_body={"seed": 1}, **knobs) == "door"
+    assert client._responses("q", extra_body={"seed": 1,
+                                              "reasoning": {"effort": "low"}},
+                             **knobs) == "door"
     assert seen[0] == seen[1]
-    assert seen[0][1]["reasoning"] == {"effort": "low"}
+    assert seen[0][1]["reasoning"] is None
+    # OpenAI's own effort field; the caller's extra_body still wins
+    client.chat("q", protocol="responses", reasoning_effort="low",
+                extra_body={"reasoning": {"effort": "high"}})
+    assert seen[-1][1]["extra_body"] == {"reasoning": {"effort": "high"}}
+    # a caller's other reasoning keys survive; only effort is ours
+    client.chat("q", protocol="responses", reasoning_effort="low",
+                extra_body={"reasoning": {"summary": "auto"}})
+    assert seen[-1][1]["extra_body"] == {
+        "reasoning": {"summary": "auto", "effort": "low"}}
+    # "" is unset, like model="" and instructions=""
+    client.chat("q", protocol="responses", reasoning_effort="",
+                extra_body={"seed": 1})
+    assert seen[-1][1]["extra_body"] == {"seed": 1}
+    assert seen[-1][1]["reasoning"] is None
     # the default for the stream view is silently off on a protocol lane
     assert client.chat("q", protocol="responses", stream=True) == "door"
     assert seen[-1][1]["stream"] is True
@@ -3082,6 +3132,10 @@ def test_chat_protocol_messages_is_the_door(client, monkeypatch):
                 extra_body={"output_config": {"format": {"type": "json"}}})
     assert seen[-1][1]["extra_body"] == {
         "output_config": {"format": {"type": "json"}, "effort": "low"}}
+    # "" is unset, like model="" and instructions=""
+    client.chat("q", protocol="messages", model="claude-x",
+                reasoning_effort="")
+    assert seen[-1][1]["extra_body"] is None
 
 
 def test_chat_protocol_chokes(client, monkeypatch):

@@ -77,13 +77,13 @@ def _split_chat_messages(messages) -> "tuple[list[str], list[dict]]":
             content = message.get("content")
             if not isinstance(content, str):
                 raise PageIndexAPIError(
-                    "chat_completions content must be a string; for "
+                    "content must be a string on this lane; for "
                     "structured items use chat(protocol=...)."
                 )
             history.append({"role": role, "content": content})
         else:
             raise PageIndexAPIError(
-                f"Unsupported role for chat_completions: {role!r}. Tool "
+                f"Unsupported role {role!r} on this lane. Tool "
                 "history round-trips belong to chat(protocol=...)."
             )
     if not history:
@@ -318,7 +318,7 @@ def _openai_agent(client, protocol: str, model_name: str, instructions: str,
     # top-level kwarg on every supported openai-agents version, and the
     # channel admits values outside the OpenAI enum ("none").
     extra_args = _cache_extra_args(model_name)
-    if reasoning_effort is not None:
+    if reasoning_effort:
         extra_args = {**(extra_args or {}),
                       "reasoning_effort": reasoning_effort}
     conn = _sdk_backend(backend) if backend else {}
@@ -1106,7 +1106,7 @@ def run_responses(client, input, model: Optional[str] = None,
                                            max_output_tokens),
             "error": recorded.get("error"),
             "incomplete_details": recorded.get("incomplete_details"),
-            "metadata": None,
+            "metadata": given.get("metadata"),
         }
 
     if not stream:
