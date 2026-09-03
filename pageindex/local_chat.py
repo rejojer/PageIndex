@@ -253,6 +253,8 @@ def _litellm_claude_marks(wire: str) -> Optional[dict]:
     hands bare names to LiteLLM's own resolution)."""
     try:
         from litellm import get_llm_provider
+        from .utils import _quiet_litellm
+        _quiet_litellm()
         model, provider, _, _ = get_llm_provider(model=wire)
     except Exception:
         return None
@@ -288,6 +290,8 @@ def _openai_protocol(model_name: str) -> bool:
         return True
     try:
         import litellm
+        from .utils import _quiet_litellm
+        _quiet_litellm()
         _, provider, _, _ = litellm.get_llm_provider(model=wire)
     except Exception:
         return False
@@ -1302,6 +1306,7 @@ def _default_max_tokens(model: str, thinking=None) -> int:
     if isinstance(budget, int) and not isinstance(budget, bool):
         want = budget + 8192
         try:
+            from . import utils  # noqa: F401  — must precede litellm's import
             import litellm
             ceiling = (litellm.model_cost.get(model)
                        or {}).get("max_output_tokens")

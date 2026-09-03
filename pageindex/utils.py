@@ -12,6 +12,8 @@ import asyncio
 from io import BytesIO
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv(usecwd=True))
+# litellm's import fetches its model map over the network unless told not to.
+os.environ.setdefault("LITELLM_LOCAL_MODEL_COST_MAP", "True")
 import logging
 import yaml
 from pathlib import Path
@@ -60,23 +62,16 @@ def _mute_litellm_bridge_usage_warning() -> None:
 
 
 def _quiet_litellm() -> None:
-    """litellm print()s a red "Provider List:" banner into stdout when a
-    provider lookup fails — its OpenRouter adapter probes supports_reasoning()
-    with the provider-stripped model name on every completion, so any model
-    missing from litellm's static map stamps the banner into the middle of a
-    streamed answer (get_llm_provider_logic, seen on 1.97). Flip litellm's own
-    embedder switch, as its Router does; it gates only this banner and the
-    "Give Feedback / Get Help" one. Its logger quiets the same way — WARNING
-    chatter (remote-map fetch fallbacks, cost hiccups) is not actionable for
-    SDK callers — unless the caller picked a level via LITELLM_LOG, which
-    litellm honors at import and this respects. The dotted litellm name
-    covers the module-level loggers its adapters create; errors still raise
-    and log with their full text."""
+    """Mute litellm's stdout "Provider List:" banner and default its loggers
+    to LITELLM_LOG (ERROR unset); a level set elsewhere stays."""
     import litellm
     litellm.suppress_debug_info = True
-    if os.environ.get("LITELLM_LOG", "ERROR").upper() == "ERROR":
-        for name in ("LiteLLM", "LiteLLM Router", "LiteLLM Proxy", "litellm"):
-            logging.getLogger(name).setLevel(logging.ERROR)
+    level = getattr(logging, os.environ.get("LITELLM_LOG", "ERROR").upper(),
+                    logging.ERROR)
+    for name in ("LiteLLM", "LiteLLM Router", "LiteLLM Proxy", "litellm"):
+        logger = logging.getLogger(name)
+        if logger.level == logging.NOTSET:
+            logger.setLevel(level)
 
 # Backward compatibility: support CHATGPT_API_KEY as alias for OPENAI_API_KEY
 if not os.getenv("OPENAI_API_KEY") and os.getenv("CHATGPT_API_KEY"):
@@ -189,9 +184,9 @@ def llm_completion(model, prompt, chat_history=None, return_finish_reason=False)
         except Exception as e:
             if getattr(e, "status_code", None) in _NO_RETRY_STATUS:
                 raise
-            logging.warning("Retrying LLM completion")
             logging.error(f"Error: {e}")
             if i < max_retries - 1:
+                logging.warning("Retrying LLM completion")
                 time.sleep(1)
             else:
                 raise LLMRetriesExhausted(
@@ -221,9 +216,9 @@ async def llm_acompletion(model, prompt):
         except Exception as e:
             if getattr(e, "status_code", None) in _NO_RETRY_STATUS:
                 raise
-            logging.warning("Retrying LLM completion")
             logging.error(f"Error: {e}")
             if i < max_retries - 1:
+                logging.warning("Retrying LLM completion")
                 await asyncio.sleep(1)
             else:
                 raise LLMRetriesExhausted(
