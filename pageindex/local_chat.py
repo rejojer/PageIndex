@@ -4,6 +4,7 @@ managed endpoint's chunk stream."""
 from __future__ import annotations
 
 import asyncio
+import dataclasses
 import hashlib
 import json
 import queue
@@ -303,10 +304,26 @@ def _merged_backend(client, backend):
     return merged or None
 
 
+_SKELETON_KEYS = frozenset({"system", "instructions", "input", "messages",
+                            "tools"})
+
+
+def _refuse_skeleton(extra_body) -> None:
+    """The managed prompt, conversation and tools are the SDK's on every
+    lane; extra_body merges last, so a caller's copy would replace them."""
+    hit = sorted(_SKELETON_KEYS.intersection(extra_body or ()))
+    if hit:
+        raise PageIndexAPIError(
+            f"extra_body cannot carry {', '.join(hit)}: the managed prompt, "
+            "conversation and tools are the SDK's. Extend the prompt with "
+            "instructions=; the conversation is the first argument.")
+
+
 def _openai_agent(client, protocol: str, model_name: str, instructions: str,
                   temperature, top_p, doc_ids=None, cache_key=None,
                   reasoning=None, reasoning_effort=None, extra_body=None,
                   max_tokens=None, backend=None, extra_headers=None):
+    _refuse_skeleton(extra_body)
     from agents import Agent, ModelSettings
     from .integrations.openai_agents import build_openai_tools
     # ModelSettings.extra_body is the one channel all three engines put on
@@ -336,22 +353,30 @@ def _openai_agent(client, protocol: str, model_name: str, instructions: str,
             if cache_key and openai_backend else None)
     # Caller extras merge last, so they win over ours; non-OpenAI
     # destinations take them as LiteLLM kwargs instead (see note above).
+    routed: dict[str, Any] = {}
     if extra_body:
         if openai_backend:
             body = {**(body or {}), **extra_body}
         else:
-            extra_args = {**(extra_args or {}), **extra_body}
+            # openai-agents passes ModelSettings' own fields to litellm by
+            # name beside **extra_args, so those ride their field.
+            own = {field.name for field in dataclasses.fields(ModelSettings)}
+            routed = {k: v for k, v in extra_body.items() if k in own}
+            rest = {k: v for k, v in extra_body.items() if k not in own}
+            if rest:
+                extra_args = {**(extra_args or {}), **rest}
     from pydantic import ValidationError
     try:
-        settings = ModelSettings(
-            temperature=temperature, top_p=top_p, max_tokens=max_tokens,
-            reasoning=reasoning,
+        settings = ModelSettings(**{
+            "temperature": temperature, "top_p": top_p,
+            "max_tokens": max_tokens, "reasoning": reasoning,
             # Streamed runs otherwise carry no usage at all (agents forwards
             # this as stream_options only on streaming calls).
-            include_usage=True,
-            extra_body=body,
-            extra_headers=extra_headers,
-            extra_args=extra_args)
+            "include_usage": True,
+            "extra_body": body,
+            "extra_headers": extra_headers,
+            "extra_args": extra_args,
+            **routed})
     except ValidationError as exc:
         raise PageIndexAPIError(f"Invalid model settings: {exc}") from exc
     return Agent(
@@ -1304,6 +1329,7 @@ def run_messages(client, messages, model: str,
     _require_anthropic()
     import anthropic
     _validate_max_turns(max_turns)
+    _refuse_skeleton(extra_body)
     if isinstance(messages, str) and messages.strip():
         messages = [{"role": "user", "content": messages}]
     if (not isinstance(messages, list) or not messages
